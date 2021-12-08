@@ -2,4 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.mycompany.webapp.dao.orderdb.OrderDao">
+	<select id="getOrderLists" resultType="orderlist">
+		SELECT L.oid, L.mid, L.ozipcode, L.oaddress1, L.oaddress2, L.odate,
+				L.oreceiver, L.otel, L.ousedmileage, L.ousedcoupon, L.opayment, L.ostatus,
+				L.oaccountdeadline, L.odiscounted, COUNT(*) as countitem
+		FROM ORDERLIST L, ORDERITEM I
+        WHERE L.oid = I.oid
+        GROUP BY  L.oid, L.mid, L.ozipcode, L.oaddress1, L.oaddress2, L.odate,
+				L.oreceiver, L.otel, L.ousedmileage, L.ousedcoupon, L.opayment, L.ostatus,
+				L.oaccountdeadline, L.odiscounted
+	</select>
+	
+	<select id="getOrderList" parameterType="string" resultType="orderlist">
+		SELECT oid, mid, ozipcode, oaddress1, oaddress2, odate,
+		oreceiver, otel, ousedmileage, ousedcoupon, opayment, ostatus,
+		oaccountdeadline, odiscounted, ototal
+		FROM ORDERLIST
+		WHERE OID=#{oid}
+	</select>
+	
+	<select id="getOrderItem" parameterType="string" resultType="orderitem">
+		SELECT oid, pid, ccolorcode, psize, oamount
+		FROM ORDERITEM
+		WHERE OID=#{oid}
+	</select>
 </mapper>

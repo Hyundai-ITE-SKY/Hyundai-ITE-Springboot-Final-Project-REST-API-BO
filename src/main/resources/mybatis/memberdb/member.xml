@@ -12,4 +12,37 @@
 		FROM member
 		WHERE mid=#{mid}
 	</select>
+	
+	<select id="getEvent" resultType="event">
+		select eid, ename, edetail, estartdate, eenddate, eamount, elimit, eimage
+		from event
+	</select>
+	
+	<select id="getEventDetail" resultType="event">
+		select eid, ename, edetail, estartdate, eenddate, eamount, elimit, eimage
+		from event
+		where eid=#{eid}
+	</select>
+	
+	<insert id="createEvent" parameterType="event">
+		INSERT INTO event (eid, ename, edetail, estartdate, eenddate, eamount, elimit, eimage)
+		VALUES (#{eid}, #{ename}, #{edetail}, #{estartdate}, #{eenddate}, #{eamount}, #{elimit}, #{eimage})
+	</insert>
+	
+	<update id="updateEvent" parameterType="event">
+		UPDATE event SET
+			ename = #{ename}, 
+			edetail = #{edetail}, 
+			estartdate = #{estartdate}, 
+			eenddate = #{eenddate}, 
+			eamount = #{eamount}, 
+			elimit = #{elimit}, 
+			eimage = #{eimage} 
+		WHERE eid = #{eid}
+	</update>
+	
+	<delete id="deleteEvent" parameterType="int">
+		DELETE FROM event 
+		WHERE eid=#{eid}
+	</delete>
 </mapper>
