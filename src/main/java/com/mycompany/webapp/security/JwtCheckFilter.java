@@ -8,11 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import io.jsonwebtoken.Claims;
@@ -47,6 +45,9 @@ public class JwtCheckFilter extends OncePerRequestFilter {
 				String authority = JwtUtil.getAuthority(claims);
 				log.info("mid: " + mid);
 				log.info("authority: " + authority);
+				
+				request.setAttribute("mid", mid);
+				
 				// Security 인증하기
 				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(mid, null,
 						AuthorityUtils.createAuthorityList(authority));

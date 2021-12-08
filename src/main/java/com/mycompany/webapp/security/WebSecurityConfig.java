@@ -1,7 +1,6 @@
 package com.mycompany.webapp.security;
 
 import javax.annotation.Resource;
-import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
@@ -26,8 +25,6 @@ import lombok.extern.slf4j.Slf4j;
 @EnableWebSecurity
 @Slf4j
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-	@Resource
-	private DataSource dataSource;
 
 	@Resource
 	private CustomUserDetailsService customUserDetailsService;
@@ -42,12 +39,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.csrf().disable();
 
 		// 요청 경로 권한 설정
-		http.authorizeRequests().antMatchers("/board/**").authenticated().antMatchers("/**").permitAll();
+		http.authorizeRequests().antMatchers("/member/**").authenticated().antMatchers("/**").permitAll();
 
 		// 세션 비활성화
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-		// JwtCheckFiler 추가
+		// JwtCheckFiler 추가W
 		JwtCheckFilter jwtCheckFilter = new JwtCheckFilter();
 		http.addFilterBefore(jwtCheckFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -104,7 +101,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		conf.addAllowedMethod("*");
 		// 모든 요청 헤드 허용
 		conf.addAllowedHeader("*");
-		
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", conf);
 		return source;

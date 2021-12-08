@@ -64,21 +64,15 @@ public class JwtUtil {
 	}
 
 	// 확인
-	/*public static void main(String[] args) throws Exception {
-		String mid = "user";
-		String authority = "ROLE_USER";
-		String jwt = createToken(mid, authority);
-		log.info(jwt);
-	
-		// 토큰 유효성 검사
-		Claims claims = validateToken(jwt);
-	
-		if (claims != null) {
-			log.info("유효한 토큰");
-			log.info("mid: " + getMid(claims));
-			log.info("authority: " + getAuthority(claims));
-		} else {
-			log.info("유효하지 않은 토큰");
-		}
-	}*/
+	/*
+	 * public static void main(String[] args) throws Exception { String mid =
+	 * "user"; String authority = "ROLE_USER"; String jwt = createToken(mid,
+	 * authority); log.info(jwt);
+	 * 
+	 * // 토큰 유효성 검사 Claims claims = validateToken(jwt);
+	 * 
+	 * if (claims != null) { log.info("유효한 토큰"); log.info("mid: " + getMid(claims));
+	 * log.info("authority: " + getAuthority(claims)); } else {
+	 * log.info("유효하지 않은 토큰"); } }
+	 */
 }

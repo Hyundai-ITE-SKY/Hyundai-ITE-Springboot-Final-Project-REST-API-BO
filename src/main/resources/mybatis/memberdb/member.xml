@@ -2,4 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.mycompany.webapp.dao.memberdb.MemberDao">
+	<select id="getMemberList" resultType="member">
+		SELECT *
+		FROM member
+	</select>
+	<select id="selectByMid" parameterType="string"
+		resultType="member">
+		SELECT *
+		FROM member
+		WHERE mid=#{mid}
+	</select>
 </mapper>
