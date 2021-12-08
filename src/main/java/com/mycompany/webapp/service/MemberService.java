@@ -4,7 +4,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.mycompany.webapp.dao.MemberDao;
+import com.mycompany.webapp.dao.MemberTestDao;
 import com.mycompany.webapp.dto.Member;
 
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ public class MemberService {
 	}
 	
 	@Resource
-	private MemberDao memberDao;
+	private MemberTestDao memberDao;
 	
 	//회원 가입을 처리하는 비즈니스 메소드(로직)
 	public JoinResult join(Member member) {
