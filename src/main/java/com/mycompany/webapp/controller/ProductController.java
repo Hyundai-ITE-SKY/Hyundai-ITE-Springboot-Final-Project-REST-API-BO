@@ -33,13 +33,15 @@ public class ProductController {
 	
 	//상품 목록 불러오기
 	@GetMapping("/list/{pageNo}")
-	public List<Product> getProductList(@PathVariable int pageNo) {
+	public Map<String, Object> getProductList(@PathVariable int pageNo) {
 		log.info("실행");
 		int totalRows = productService.getTotalProduct();
 		Pager pager = new Pager(12, 5, totalRows, pageNo);
 		
 		List<Product> productList = productService.getProductList(pager);
-		return productList;
+		Map<String, Object> map = new HashMap<>();
+		map.put("products", productList);
+		return map;
 	}
 	
 	//상품 등록하기
