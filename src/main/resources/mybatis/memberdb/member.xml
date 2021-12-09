@@ -12,4 +12,8 @@
 		FROM member
 		WHERE mid=#{mid}
 	</select>
+	<select id="getGradeList" resultType="grade">
+		SELECT *
+		FROM grade
+	</select>
 </mapper>

@@ -1,6 +1,8 @@
 package com.mycompany.webapp.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -26,5 +28,15 @@ public class MemberController {
 	public List<Member> getMemberList(HttpServletRequest request) {
 		log.info("실행");
 		return memberService.getMemberList();
+	}
+	
+	@GetMapping("/grade/list")
+	public Map<String, Object> getGradeList(HttpServletRequest request) {
+		log.info("실행");
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("grades", memberService.getGradeList());
+		
+		return map;
 	}
 }
