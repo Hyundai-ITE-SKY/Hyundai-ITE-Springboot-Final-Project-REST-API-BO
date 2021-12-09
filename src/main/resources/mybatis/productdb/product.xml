@@ -79,4 +79,59 @@
 	<delete id="deleteByPid" parameterType="string">
 		delete from product where pid=#{pid}
 	</delete>
+	
+	<insert id="insertProduct" parameterType="product">
+		insert into product(pid, bno, clarge, cmedium, csmall, pno, pname, pprice, pdetail, pseason, ptotalamount)
+		values(#{pid}, #{bno}, #{clarge}, #{cmedium}, #{csmall}, #{pno}, #{pname}, #{pprice}, #{pdetail}, #{pseason}, #{ptotalamount})
+	</insert>
+	
+	<insert id="insertColor" parameterType="color">
+		insert into color(pid, ccolorcode, cimage1, cimage2, cimage3, ccolorimage, cmatchpid)
+		values(#{pid}, #{ccolorcode}, #{cimage1}, #{cimage2}, #{cimage3}, #{ccolorimage}, #{cmatchpid})
+	</insert>
+	
+	<insert id="insertStock" parameterType="stock">
+		insert into stock(pid, ccolorcode, ssize, samount)
+		values(#{pid}, #{ccolorcode}, #{ssize}, #{samount})
+	</insert>
+	
+	<select id="selectWithPno" parameterType="int" resultType="product">
+		SELECT p.pid as pid, b.bname as bname, p.clarge as clarge,
+		p.cmedium as cmedium, p.csmall as csmall,
+		p.pno as pno, p.pname as
+		pname, p.pprice as pprice, p.pdetail as pdetail, p.pseason as pseason,
+		p.ptotalamount as ptotalamount
+		FROM product p, brand b
+		WHERE pno = #{pno}
+		AND b.bno = p.bno
+	</select>
+	
+	<update id="updateProduct">
+		update product
+		set pid=#{product.pid}, bno=#{product.bno}, clarge=#{product.clarge}, cmedium=#{product.cmedium}, csmall=#{product.csmall}, pname=#{product.pname},
+		pprice=#{product.pprice}, pdetail=#{product.pdetail}, pseason=#{product.pseason}
+		where pid=#{beforepid}
+	</update>
+	
+	<update id="updateProductColors">
+		update color
+		set ccolorcode=#{color.ccolorcode}, cimage1=#{color.cimage1}, cimage2=#{color.cimage2}, cimage3=#{color.cimage3}, ccolorimage=#{color.ccolorimage}, cmatchpid=#{color.cmatchpid}
+		where pid=#{beforepid} and ccolorcode=#{beforecolor} 
+	</update>
+	
+	<delete id="deleteByPidColor">
+		delete from color
+		where pid=#{pid} and ccolorcode=#{color}
+	</delete>
+	
+	<update id="updateProductStocks">
+		update stock
+		set ssize=#{stock.ssize}, samount=#{stock.samount}
+		where pid=#{pid} and ccolorcode=#{color} and ssize=#{size}
+	</update>
+	
+	<delete id="deleteByPidColorSize">
+		delete from stock
+		where pid=#{pid} and ccolorcode=#{color} and ssize=#{size}
+	</delete>
 </mapper>
