@@ -8,11 +8,11 @@
 	</select>
 	
 	<select id="selectProductList" parameterType="pager" resultType="product">
-		SELECT rnum, pno, pid, clarge, cmedium, csmall, pname, bname
+		SELECT rnum, pno, pid, clarge, cmedium, csmall, pname, bname, pprice
 		FROM(
-			SELECT ROWNUM as rnum, pno, pid, clarge, cmedium, csmall, pname, bname
+			SELECT ROWNUM as rnum, pno, pid, clarge, cmedium, csmall, pname, bname, pprice
 			FROM(
-			    select p.pno as pno, p.pid as pid, p.clarge as clarge, p.cmedium as cmedium, p.csmall as csmall, p.pname as pname, b.bname as bname
+			    select p.pno as pno, p.pid as pid, p.clarge as clarge, p.cmedium as cmedium, p.csmall as csmall, p.pname as pname, b.bname as bname, p.pprice as pprice
 		        from product p join brand b
 		        on p.bno = b.bno
 		        order by p.pno

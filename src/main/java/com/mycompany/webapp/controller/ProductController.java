@@ -41,6 +41,7 @@ public class ProductController {
 		List<Product> productList = productService.getProductList(pager);
 		Map<String, Object> map = new HashMap<>();
 		map.put("products", productList);
+		map.put("totalRows", totalRows);
 		return map;
 	}
 	
