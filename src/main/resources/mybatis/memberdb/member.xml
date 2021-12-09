@@ -6,49 +6,83 @@
 		SELECT *
 		FROM member
 	</select>
-  
+
 	<select id="selectByMid" parameterType="string"
 		resultType="member">
 		SELECT *
 		FROM member
 		WHERE mid=#{mid}
 	</select>
-  
+
 	<select id="getGradeList" resultType="grade">
 		SELECT *
 		FROM grade
-	</select>	
-  
+		ORDER BY
+		gmax
+	</select>
+
+	<insert id="createGrade" parameterType="grade">
+		INSERT INTO grade (gname,
+		gmax, gsale)
+		VALUES
+		(#{gname}, #{gmax}, #{gsale})
+	</insert>
+
+	<update id="updateGrade" parameterType="HashMap">
+		UPDATE grade SET
+		gname =
+		#{grade.gname},
+		gmax = #{grade.gmax},
+		gsale = #{grade.gsale}
+		WHERE
+		gmax=#{beforegmax}
+	</update>
+
+	<delete id="deleteGrade" parameterType="int">
+		DELETE FROM grade
+		WHERE
+		gmax=#{gmax}
+	</delete>
+
 	<select id="getEvent" resultType="event">
-		select eid, ename, edetail, estartdate, eenddate, eamount, elimit, eimage
+		select eid, ename, edetail,
+		estartdate, eenddate, eamount, elimit, eimage
 		from event
-	</select>	
-  
+	</select>
+
 	<select id="getEventDetail" resultType="event">
-		select eid, ename, edetail, estartdate, eenddate, eamount, elimit, eimage
+		select eid, ename,
+		edetail, estartdate, eenddate, eamount, elimit, eimage
 		from event
-		where eid=#{eid}
-	</select>	
-  
+		where
+		eid=#{eid}
+	</select>
+
 	<insert id="createEvent" parameterType="event">
-		INSERT INTO event (eid, ename, edetail, estartdate, eenddate, eamount, elimit, eimage)
-		VALUES (#{eid}, #{ename}, #{edetail}, #{estartdate}, #{eenddate}, #{eamount}, #{elimit}, #{eimage})
-	</insert>	
-  
+		INSERT INTO event (eid,
+		ename, edetail, estartdate, eenddate, eamount, elimit, eimage)
+		VALUES
+		(#{eid}, #{ename}, #{edetail}, #{estartdate}, #{eenddate}, #{eamount},
+		#{elimit}, #{eimage})
+	</insert>
+
 	<update id="updateEvent" parameterType="event">
 		UPDATE event SET
-			ename = #{ename}, 
-			edetail = #{edetail}, 
-			estartdate = #{estartdate}, 
-			eenddate = #{eenddate}, 
-			eamount = #{eamount}, 
-			elimit = #{elimit}, 
-			eimage = #{eimage} 
+		ename =
+		#{ename},
+		edetail = #{edetail},
+		estartdate = #{estartdate},
+		eenddate =
+		#{eenddate},
+		eamount = #{eamount},
+		elimit = #{elimit},
+		eimage = #{eimage}
 		WHERE eid = #{eid}
-	</update>	
-  
+	</update>
+
 	<delete id="deleteEvent" parameterType="int">
-		DELETE FROM event 
-		WHERE eid=#{eid}
+		DELETE FROM event
+		WHERE
+		eid=#{eid}
 	</delete>
 </mapper>

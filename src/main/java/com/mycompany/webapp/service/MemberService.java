@@ -1,5 +1,6 @@
 package com.mycompany.webapp.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -30,5 +31,22 @@ public class MemberService {
 
 	public List<Grade> getGradeList() {
 		return memberDao.getGradeList();
+	}
+	
+	public int createGrade(Grade grade) {
+		return memberDao.createGrade(grade);
+	}
+	
+	public int updateGrade(int beforegmax, Grade grade) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("beforegmax", beforegmax);
+		map.put("grade", grade);
+		
+		return memberDao.updateGrade(map);
+	}
+	
+	public int deleteGrade(int gmax) {
+		return memberDao.deleteGrade(gmax);
 	}
 }

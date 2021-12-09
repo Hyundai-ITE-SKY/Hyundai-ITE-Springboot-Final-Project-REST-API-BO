@@ -1,5 +1,6 @@
 package com.mycompany.webapp.dao.memberdb;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -12,7 +13,12 @@ import com.mycompany.webapp.dto.Member;
 public interface MemberDao {
 	public List<Member> getMemberList();
 	public Member selectByMid(String mid);
+
 	public List<Grade> getGradeList();
+	public int createGrade(Grade grade);
+	public int updateGrade(HashMap<String, Object> map);
+	public int deleteGrade(int gmax);
+
 	public List<Event> getEvent();
 	public int createEvent(Event event);
 	public Event getEventDetail(int eid);
