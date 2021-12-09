@@ -59,4 +59,41 @@ public class ProductService {
 	public void removeProduct(String pid) {
 		productDao.deleteByPid(pid);
 	}
+
+	public void createProduct(Product product) {
+		productDao.insertProduct(product);
+	}
+
+	public void createColor(Color color) {
+		productDao.insertColor(color);
+	}
+
+	public void createStock(Stock stock) {
+		productDao.insertStock(stock);
+	}
+
+	public void updateProduct(Product product, String beforePid) {
+		productDao.updateProduct(product, beforePid);
+	}
+
+	public void updateProductColors(Color color, String beforePid, String beforecolor) {
+		productDao.updateProductColors(color, beforePid, beforecolor);
+	}
+
+	public void updateProductStocks(Stock stock, String beforePid, String beforecolor, String beforesize) {
+		productDao.updateProductStocks(stock, beforePid, beforecolor, beforesize);
+	}
+
+	public Product selectWithPno(int pno) {
+		return productDao.selectWithPno(pno);
+	}
+
+	public void removeProductColors(String beforePid, String beforecolor) {
+		productDao.deleteByPidColor(beforePid, beforecolor);
+	}
+
+	public void removeProductStocks(String beforePid, String beforecolor, String beforesize) {
+		productDao.deleteByPidColorSize(beforePid, beforecolor, beforesize);
+	}
+
 }

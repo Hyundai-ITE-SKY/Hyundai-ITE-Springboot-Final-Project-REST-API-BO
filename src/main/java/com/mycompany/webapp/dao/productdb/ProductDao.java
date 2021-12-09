@@ -24,4 +24,13 @@ public interface ProductDao {
 	public List<StockList> selectStockList(@Param("pager") Pager pager);
 	public int updateStock(Stock stock);
 	public int deleteByPid(String pid);
+	public int insertProduct(Product product);
+	public int insertColor(Color color);
+	public int insertStock(Stock stock);
+	public int updateProduct(@Param("product") Product product, @Param("beforepid") String beforePid);
+	public int updateProductColors(@Param("color") Color color, @Param("beforepid") String beforePid, @Param("beforecolor") String beforecolor);
+	public int updateProductStocks(@Param("stock")Stock stock, @Param("pid")String beforePid, @Param("color")String beforecolor, @Param("size")String beforesize);
+	public Product selectWithPno(int pno);
+	public int deleteByPidColor(@Param("pid") String beforePid, @Param("color") String beforecolor);
+	public int deleteByPidColorSize(@Param("pid") String beforePid, @Param("color") String beforecolor, @Param("size") String beforesize);
 }

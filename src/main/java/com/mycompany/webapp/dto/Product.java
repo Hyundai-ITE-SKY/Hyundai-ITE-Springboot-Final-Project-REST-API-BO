@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 public class Product {
 	private String pid;
+	private int bno;
 	private String bname;
 	private String clarge;
 	private String cmedium;
