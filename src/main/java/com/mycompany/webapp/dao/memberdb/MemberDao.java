@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.mycompany.webapp.dto.Grade;
 import com.mycompany.webapp.dto.Event;
 import com.mycompany.webapp.dto.Member;
 
@@ -11,6 +12,7 @@ import com.mycompany.webapp.dto.Member;
 public interface MemberDao {
 	public List<Member> getMemberList();
 	public Member selectByMid(String mid);
+	public List<Grade> getGradeList();
 	public List<Event> getEvent();
 	public int createEvent(Event event);
 	public Event getEventDetail(int eid);

@@ -6,29 +6,35 @@
 		SELECT *
 		FROM member
 	</select>
+  
 	<select id="selectByMid" parameterType="string"
 		resultType="member">
 		SELECT *
 		FROM member
 		WHERE mid=#{mid}
 	</select>
-	
+  
+	<select id="getGradeList" resultType="grade">
+		SELECT *
+		FROM grade
+	</select>	
+  
 	<select id="getEvent" resultType="event">
 		select eid, ename, edetail, estartdate, eenddate, eamount, elimit, eimage
 		from event
-	</select>
-	
+	</select>	
+  
 	<select id="getEventDetail" resultType="event">
 		select eid, ename, edetail, estartdate, eenddate, eamount, elimit, eimage
 		from event
 		where eid=#{eid}
-	</select>
-	
+	</select>	
+  
 	<insert id="createEvent" parameterType="event">
 		INSERT INTO event (eid, ename, edetail, estartdate, eenddate, eamount, elimit, eimage)
 		VALUES (#{eid}, #{ename}, #{edetail}, #{estartdate}, #{eenddate}, #{eamount}, #{elimit}, #{eimage})
-	</insert>
-	
+	</insert>	
+  
 	<update id="updateEvent" parameterType="event">
 		UPDATE event SET
 			ename = #{ename}, 
@@ -39,8 +45,8 @@
 			elimit = #{elimit}, 
 			eimage = #{eimage} 
 		WHERE eid = #{eid}
-	</update>
-	
+	</update>	
+  
 	<delete id="deleteEvent" parameterType="int">
 		DELETE FROM event 
 		WHERE eid=#{eid}

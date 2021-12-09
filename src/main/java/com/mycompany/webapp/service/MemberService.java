@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.mycompany.webapp.dao.memberdb.MemberDao;
+import com.mycompany.webapp.dto.Grade;
 import com.mycompany.webapp.dto.Member;
 
 import lombok.extern.slf4j.Slf4j;
@@ -22,8 +23,12 @@ public class MemberService {
 		log.info("실행");
 		return memberDao.getMemberList();
 	}
-	
+
 	public Member selectByMid(String mid) {
 		return memberDao.selectByMid(mid);
+	}
+
+	public List<Grade> getGradeList() {
+		return memberDao.getGradeList();
 	}
 }

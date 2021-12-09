@@ -3,6 +3,8 @@
 
 <configuration>
 	<typeAliases>
+		<typeAlias type="com.mycompany.webapp.dto.Grade"
+			alias="grade" />
 		<typeAlias type="com.mycompany.webapp.dto.Board" alias="board" />
 		<typeAlias type="com.mycompany.webapp.dto.Pager" alias="pager" />
 		<typeAlias type="com.mycompany.webapp.dto.Member" alias="member" />
