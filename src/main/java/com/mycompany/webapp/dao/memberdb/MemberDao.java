@@ -13,6 +13,7 @@ import com.mycompany.webapp.dto.Member;
 public interface MemberDao {
 	public List<Member> getMemberList();
 	public Member selectByMid(String mid);
+	public int createMember(Member member);
 
 	public List<Grade> getGradeList();
 	public int createGrade(Grade grade);
