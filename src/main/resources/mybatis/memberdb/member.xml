@@ -14,6 +14,17 @@
 		WHERE mid=#{mid}
 	</select>
 
+	<insert id="createMember" parameterType="member">
+		INSERT INTO member (mid,
+		mpassword, mname, memail, mtel, mzipcode, maddress1, maddress2,
+		mgrade, mdate, mpoint, menabled, mrole, mtotalpayment)
+		VALUES
+		(#{mid},
+		#{mpassword}, #{mname}, #{memail}, #{mtel}, #{mzipcode},
+		#{maddress1},
+		#{maddress2}, #{mgrade}, #{mdate}, 0, 1, #{mrole}, #{mtotalpayment})
+	</insert>
+
 	<select id="getGradeList" resultType="grade">
 		SELECT *
 		FROM grade

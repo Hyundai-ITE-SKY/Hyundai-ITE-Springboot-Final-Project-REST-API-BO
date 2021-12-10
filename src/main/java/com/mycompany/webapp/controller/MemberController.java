@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mycompany.webapp.dto.Grade;
+import com.mycompany.webapp.dto.Member;
 import com.mycompany.webapp.service.MemberService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +34,24 @@ public class MemberController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("members", memberService.getMemberList());
 
+		return map;
+	}
+	
+	@PostMapping("/create")
+	public Map<String, Object> createMember(Member member, HttpServletRequest request) {
+		log.info("실행");
+
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		try {
+			memberService.createMember(member);
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("result", "fail");
+			return map;
+		}
+
+		map.put("result", "success");
 		return map;
 	}
 

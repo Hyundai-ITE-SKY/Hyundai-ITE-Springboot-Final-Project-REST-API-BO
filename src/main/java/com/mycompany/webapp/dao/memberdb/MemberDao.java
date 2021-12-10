@@ -14,6 +14,7 @@ import com.mycompany.webapp.dto.Pager;
 public interface MemberDao {
 	public List<Member> getMemberList();
 	public Member selectByMid(String mid);
+	public int createMember(Member member);
 
 	public List<Grade> getGradeList();
 	public int createGrade(Grade grade);

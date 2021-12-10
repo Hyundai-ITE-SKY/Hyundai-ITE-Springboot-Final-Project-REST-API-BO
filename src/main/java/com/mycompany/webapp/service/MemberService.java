@@ -33,6 +33,10 @@ public class MemberService {
 		return memberDao.getGradeList();
 	}
 	
+	public int createMember(Member member) {
+		return memberDao.createMember(member);
+	}
+	
 	public int createGrade(Grade grade) {
 		return memberDao.createGrade(grade);
 	}
