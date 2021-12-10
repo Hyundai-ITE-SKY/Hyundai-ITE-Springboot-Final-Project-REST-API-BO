@@ -65,7 +65,7 @@ public class ProductController {
 	
 	//상품 상세 조회
 	@GetMapping("/{pid}")
-	public Product getProduct(@PathVariable String pid) {
+	public Map<String, Object> getProduct(@PathVariable String pid) {
 		log.info("실행");
 		Product product = productService.selectWithPid(pid);
 		product.setColors(productService.getProductColors(pid));
@@ -75,7 +75,9 @@ public class ProductController {
 			color.setStocks(stocks);
 		}
 		
-		return product;
+		Map<String, Object> map = new HashMap<>();
+		map.put("product", product);
+		return map;
 	}
 	
 	//상품 수정하기
