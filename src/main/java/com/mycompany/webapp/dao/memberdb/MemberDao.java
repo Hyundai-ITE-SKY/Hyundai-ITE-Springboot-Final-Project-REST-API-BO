@@ -7,15 +7,17 @@ import org.apache.ibatis.annotations.Mapper;
 import com.mycompany.webapp.dto.Grade;
 import com.mycompany.webapp.dto.Event;
 import com.mycompany.webapp.dto.Member;
+import com.mycompany.webapp.dto.Pager;
 
 @Mapper
 public interface MemberDao {
 	public List<Member> getMemberList();
 	public Member selectByMid(String mid);
 	public List<Grade> getGradeList();
-	public List<Event> getEvent();
+	public List<Event> getEvent(Pager pager);
 	public int createEvent(Event event);
 	public Event getEventDetail(int eid);
 	public int updateEvent(Event event);
 	public int deleteEvent(int eid);
+	public int getTotalEvent();
 }
