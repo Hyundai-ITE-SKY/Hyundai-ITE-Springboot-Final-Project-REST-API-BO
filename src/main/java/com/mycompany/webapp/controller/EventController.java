@@ -43,9 +43,21 @@ public class EventController {
 	}
 	
 	@GetMapping("/detail")
-	public Event getEventDetail(@RequestParam("eid") int eid) {
+	public Map<String, Object> getEventDetail(@RequestParam("eid") int eid) {
 		log.info("실행");
-		return eventService.getEventDetail(eid);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		Event event = eventService.getEventDetail(eid);
+		map.put("eid", event.getEid());
+		map.put("ename", event.getEname());
+		map.put("edetail", event.getEdetail());
+		map.put("estartdate", event.getEstartdate());
+		map.put("eenddate", event.getEenddate());
+		map.put("eimage", event.getEimage());
+		map.put("eamount", event.getEamount());
+		map.put("elimit", event.getElimit());
+		log.info("map"+map);
+		return map;
 	}
 	
 	@GetMapping("/totalrows")
@@ -54,14 +66,12 @@ public class EventController {
 
 		map.put("value", eventService.getTotalEvent());
 		
-		log.info(map+"");
 		return map;
 	}
 	
 	@PostMapping("/create")
 	public Map<String, Object> createEvent(Event event) {
 		log.info("실행");
-		log.info("event API"+event);
 		Map<String, Object> map = new HashMap<>();
 		
 		map.put("value", eventService.createEvent(event));
@@ -69,14 +79,20 @@ public class EventController {
 	}
 	
 	@PostMapping("/update")
-	public int updateEvent(Event event) {
+	public Map<String, Object> updateEvent(Event event) {
 		log.info("실행"); 
-		return eventService.updateEvent(event);
+		Map<String, Object> map = new HashMap<>();
+		map.put("value", eventService.updateEvent(event));
+		return map;
 	}
 	
 	@DeleteMapping("/delete")
-	public int deleteEvent(int eid) {
+	public Map<String, Object> deleteEvent(@RequestParam("eid") int eid) {
 		log.info("실행");
-		return eventService.deleteEvent(eid);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("value", eventService.deleteEvent(eid));
+		
+		return map;
 	}
 }
