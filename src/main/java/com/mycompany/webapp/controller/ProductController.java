@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mycompany.webapp.dto.Brand;
+import com.mycompany.webapp.dto.CategoryLarge;
+import com.mycompany.webapp.dto.CategoryMedium;
 import com.mycompany.webapp.dto.Color;
 import com.mycompany.webapp.dto.Pager;
 import com.mycompany.webapp.dto.Product;
@@ -76,7 +79,9 @@ public class ProductController {
 		}
 		
 		Map<String, Object> map = new HashMap<>();
+		List<Brand> brandList = productService.getBrandList();
 		map.put("product", product);
+		map.put("brands", brandList);
 		return map;
 	}
 	
@@ -214,4 +219,29 @@ public class ProductController {
 		productService.updateStock(stock);
 		return stock;
 	}
+	
+	//전체 카테고리 조회
+	@GetMapping("/category")
+	public Map<String, Object> getCategoryList() {
+		log.info("실행");
+		
+		List<CategoryLarge> clarges = productService.getClarge();
+		
+		for(CategoryLarge clarge: clarges) {
+			List<CategoryMedium> cmediums =productService.getCmedium(clarge);
+			
+			for(CategoryMedium cmedium : cmediums) {
+				List<String> csmalls = productService.getCsmall(clarge.getClarge(), cmedium.getCmedium());
+				cmedium.setCsmall(csmalls);
+				cmedium.setCmedium(cmedium.getCmedium());
+			}
+			clarge.setCmedium(cmediums);
+		}
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("category", clarges);
+		
+		return map;
+	}
+	
 }

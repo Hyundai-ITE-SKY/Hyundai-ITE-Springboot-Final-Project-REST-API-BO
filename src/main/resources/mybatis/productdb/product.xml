@@ -23,7 +23,7 @@
 	</select>
 	
 	<select id="selectProductWithPid" parameterType="string" resultType="product">
-		SELECT p.pid as pid, b.bname as bname, p.clarge as clarge,
+		SELECT p.pid as pid, b.bno as bno, b.bname as bname, p.clarge as clarge,
 		p.cmedium as cmedium, p.csmall as csmall,
 		p.pno as pno, p.pname as
 		pname, p.pprice as pprice, p.pdetail as pdetail, p.pseason as pseason,
@@ -134,4 +134,26 @@
 		delete from stock
 		where pid=#{pid} and ccolorcode=#{color} and ssize=#{size}
 	</delete>
+	
+	<select id="selectBrandList" resultType="brand">
+		select bno, bname
+		from brand
+	</select>
+	
+	<select id="selectClarge" resultType="clarge">
+		select distinct clarge
+		from category
+	</select>
+	
+	<select id="selectCmedium" parameterType="clarge" resultType="cmedium">
+		select distinct cmedium
+		from category
+		where clarge=#{clarge}
+	</select>
+	
+	<select id="selectCsmall" resultType="string">
+		select csmall
+		from category
+		where clarge=#{clarge} and cmedium=#{cmedium}
+	</select>
 </mapper>
