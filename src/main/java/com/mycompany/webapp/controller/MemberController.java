@@ -36,7 +36,7 @@ public class MemberController {
 
 		return map;
 	}
-	
+
 	@PostMapping("/create")
 	public Map<String, Object> createMember(Member member, HttpServletRequest request) {
 		log.info("실행");
@@ -44,6 +44,7 @@ public class MemberController {
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		try {
+			member.setMpassword("{noop}" + member.getMpassword());
 			memberService.createMember(member);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -82,7 +83,7 @@ public class MemberController {
 		map.put("result", "success");
 		return map;
 	}
-	
+
 	@RequestMapping("/grade/update/{beforegmax}")
 	public Map<String, Object> updateGrade(@PathVariable int beforegmax, Grade grade, HttpServletRequest request) {
 		log.info("실행");
