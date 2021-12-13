@@ -66,6 +66,16 @@ public class MemberController {
 		return map;
 	}
 
+	@GetMapping("/grade/apply")
+	public Map<String, Object> applyGrade(HttpServletRequest request) {
+		log.info("실행");
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("result", memberService.applyMemberGrade());
+		
+		return map;
+	}
+
 	@PostMapping("/grade/create")
 	public Map<String, Object> createGrade(Grade grade, HttpServletRequest request) {
 		log.info("실행");

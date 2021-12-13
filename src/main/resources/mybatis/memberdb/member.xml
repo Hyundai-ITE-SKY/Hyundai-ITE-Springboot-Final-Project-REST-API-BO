@@ -32,6 +32,26 @@
 		gmax
 	</select>
 
+	<select id="getGrade" parameterType="int" resultType="string">
+		SELECT
+		gname
+		FROM (
+		SELECT gname
+		FROM grade
+		WHERE gmax > #{payment}
+		ORDER BY gmax
+		)
+		WHERE ROWNUM = 1
+	</select>
+
+	<update id="setGrade" parameterType="HashMap">
+		UPDATE member SET
+		mgrade =
+		#{grade}
+		WHERE
+		mid = #{mid}
+	</update>
+
 	<insert id="createGrade" parameterType="grade">
 		INSERT INTO grade (gname,
 		gmax, gsale)
@@ -56,12 +76,17 @@
 	</delete>
 
 	<select id="getEvent" parameterType="pager" resultType="event">
-			SELECT eid, ename, edetail, estartdate, eenddate, eamount, elimit, eimage
-			FROM (SELECT ROWNUM as rnum, eid, ename, edetail, estartdate, eenddate, eamount, elimit, eimage
-					FROM (SELECT eid, ename, edetail, estartdate, eenddate, eamount, elimit, eimage
-							FROM event)
-					WHERE rownum &lt;= #{endRowNo})
-			WHERE rnum &gt;= #{startRowNo}
+		SELECT
+		eid, ename, edetail, estartdate, eenddate, eamount, elimit, eimage
+		FROM (SELECT ROWNUM as rnum, eid, ename, edetail, estartdate,
+		eenddate, eamount, elimit, eimage
+		FROM (SELECT eid, ename, edetail,
+		estartdate, eenddate, eamount, elimit,
+		eimage
+		FROM event)
+		WHERE rownum
+		&lt;= #{endRowNo})
+		WHERE rnum &gt;= #{startRowNo}
 	</select>
 
 	<select id="getEventDetail" resultType="event">
@@ -72,12 +97,12 @@
 		eid=#{eid}
 	</select>
 
-	
+
 	<select id="getTotalEvent" resultType="int">
 		select count(*)
 		from event
 	</select>
-  
+
 	<insert id="createEvent" parameterType="event">
 		INSERT INTO event (eid,
 		ename, edetail, estartdate, eenddate, eamount, elimit, eimage)
