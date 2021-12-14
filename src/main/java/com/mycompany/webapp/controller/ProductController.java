@@ -51,59 +51,29 @@ public class ProductController {
 	//상품 등록하기
 	//product, color, stock테이블에 순차적으로 insert
 	@PostMapping("/create")
-	public Product createProduct(@RequestBody Product product) {
+	public Map<String, Object> createProduct(@RequestBody Product product) {		
 		productService.createProduct(product); //product테이블에 insert
 		
-		List<Color> colors = product.getColors();
-		for(Color color : colors) {
-			productService.createColor(color);
-			List<Stock> stocks = color.getStocks();
-			
-			for(Stock stock: stocks) {
-				productService.createStock(stock);
-			}
-		}
-		return product;
+		Map<String, Object> map = new HashMap<>();
+		map.put("product", product);
+		
+		return map;
 	}
 	
 	//상품 상세 조회
 	@GetMapping("/{pid}")
 	public Map<String, Object> getProduct(@PathVariable String pid) {
 		log.info("실행");
-		Product product = productService.selectWithPid(pid);
-		product.setColors(productService.getProductColors(pid));
-		
-		for (Color color : product.getColors()) {
-			List<Stock> stocks = productService.selectStock(pid, color.getCcolorcode());
-			color.setStocks(stocks);
-		}
-		
-		Map<String, Object> map = new HashMap<>();
-		List<Brand> brandList = productService.getBrandList();
-		map.put("product", product);
-		map.put("brands", brandList);
+		Map<String, Object> map = productService.selectWithPid(pid);
+	
 		return map;
 	}
 	
 	@PostMapping("/update")
 	public Map<String, Object> updateProduct(@RequestBody Product afterproduct) {
-		//afterproduct와 같은 pno를 갖고 있는 놈의 pid를 찾아서 정보를 삭제한다.
 		log.info("실행");
-		Product beforeproduct = productService.selectWithPno(afterproduct.getPno());
-		String beforePid = beforeproduct.getPid();
-		productService.removeProduct(beforePid);
+		productService.updateProduct(afterproduct);
 		
-		productService.createProduct(afterproduct); //product테이블에 insert
-		
-		List<Color> colors = afterproduct.getColors();
-		for(Color color : colors) {
-			productService.createColor(color);
-			List<Stock> stocks = color.getStocks();
-			
-			for(Stock stock: stocks) {
-				productService.createStock(stock);
-			}
-		}
 		Map<String, Object> map = new HashMap<>();
 		map.put("product", afterproduct);
 		return map;
@@ -142,21 +112,20 @@ public class ProductController {
 	public Map<String, Object> getCategoryList() {
 		log.info("실행");
 		
-		List<CategoryLarge> clarges = productService.getClarge();
-		
-		for(CategoryLarge clarge: clarges) {
-			List<CategoryMedium> cmediums =productService.getCmedium(clarge);
-			
-			for(CategoryMedium cmedium : cmediums) {
-				List<String> csmalls = productService.getCsmall(clarge.getClarge(), cmedium.getCmedium());
-				cmedium.setCsmall(csmalls);
-				cmedium.setCmedium(cmedium.getCmedium());
-			}
-			clarge.setCmedium(cmediums);
-		}
+		List<CategoryLarge> clarges = productService.getCategoryList();
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("category", clarges);
+		
+		return map;
+	}
+	
+	@GetMapping("/allbrand")
+	public Map<String, Object> getBrandList(){
+		log.info("실행");
+		Map<String, Object> map = new HashMap<>();
+		List<Brand> brandList = productService.getBrandList();
+		map.put("brands", brandList);
 		
 		return map;
 	}
