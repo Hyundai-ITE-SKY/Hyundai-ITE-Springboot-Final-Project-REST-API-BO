@@ -5,6 +5,8 @@
 	<select id="getMemberList" resultType="member">
 		SELECT *
 		FROM member
+		ORDER
+		BY mid
 	</select>
 
 	<select id="selectByMid" parameterType="string"
@@ -13,6 +15,12 @@
 		FROM member
 		WHERE mid=#{mid}
 	</select>
+
+	<delete id="deleteByMid" parameterType="string">
+		DELETE FROM member
+		WHERE
+		mid=#{mid}
+	</delete>
 
 	<insert id="createMember" parameterType="member">
 		INSERT INTO member (mid,

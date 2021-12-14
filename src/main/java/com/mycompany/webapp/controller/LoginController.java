@@ -21,39 +21,42 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @Slf4j
 public class LoginController {
-	
+
 	@Resource
 	private AuthenticationManager authenticationManager;
-	
+
 	@RequestMapping("/login")
-	public Map<String, String> login(String mid, String mpassword){
+	public Map<String, String> login(String mid, String mpassword) {
 		log.info("실행");
-		
-		if(mid == null || mpassword == null) {
-			throw new BadCredentialsException("아이디 또는 패스워드가 제공되지 않았음");
-		}
-		
-		//Spring Security 사용자 인증
-		UsernamePasswordAuthenticationToken token = 
-				new UsernamePasswordAuthenticationToken(mid, mpassword);
-		
-		//mid와 mpassword가 db의 정보와 맞냐 안맞냐를 검증함
-		Authentication auth = authenticationManager.authenticate(token);
-		SecurityContext securityContext = SecurityContextHolder.getContext();
-		securityContext.setAuthentication(auth);
-		
-		//응답 내용
-		//mid에 해당하는 권한을 어떻게 얻느냐
-		String authority = auth.getAuthorities().iterator().next().toString();
-		
-		log.info(authority);
 		Map<String, String> map = new HashMap<>();
-		
-		map.put("result", "success");
-		map.put("mid", mid);
-		map.put("jwt", JwtUtil.createToken(mid, authority));
-		map.put("authority", authority);
-		
+
+		try {
+			if (mid == null || mpassword == null) {
+				throw new BadCredentialsException("아이디 또는 패스워드가 제공되지 않았음");
+			}
+
+			// Spring Security 사용자 인증
+			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(mid, mpassword);
+
+			// mid와 mpassword가 db의 정보와 맞냐 안맞냐를 검증함
+			Authentication auth = authenticationManager.authenticate(token);
+			SecurityContext securityContext = SecurityContextHolder.getContext();
+			securityContext.setAuthentication(auth);
+
+			// 응답 내용
+			// mid에 해당하는 권한을 어떻게 얻느냐
+			String authority = auth.getAuthorities().iterator().next().toString();
+
+			log.info(authority);
+
+			map.put("result", "success");
+			map.put("mid", mid);
+			map.put("jwt", JwtUtil.createToken(mid, authority));
+			map.put("authority", authority);
+		} catch (Exception e) {
+			map.put("result", "fail");
+		}
+
 		return map;
 	}
 }
