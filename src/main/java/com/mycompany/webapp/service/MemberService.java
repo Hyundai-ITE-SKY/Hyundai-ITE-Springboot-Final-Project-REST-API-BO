@@ -30,6 +30,10 @@ public class MemberService {
 		return memberDao.selectByMid(mid);
 	}
 
+	public int deleteByMid(String mid) {
+		return memberDao.deleteByMid(mid);
+	}
+
 	public List<Grade> getGradeList() {
 		return memberDao.getGradeList();
 	}

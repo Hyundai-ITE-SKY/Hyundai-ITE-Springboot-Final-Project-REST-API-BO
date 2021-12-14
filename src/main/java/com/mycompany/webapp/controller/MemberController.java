@@ -56,6 +56,31 @@ public class MemberController {
 		return map;
 	}
 
+	@RequestMapping("/detail")
+	public Member getMemberDetail(String mid, HttpServletRequest request) {
+		log.info("실행");
+
+		return memberService.selectByMid(mid);
+	}
+
+	@RequestMapping("/delete")
+	public Map<String, Object> deleteMember(String mid, HttpServletRequest request) {
+		log.info("실행");
+
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		try {
+			memberService.deleteByMid(mid);
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("result", "fail");
+			return map;
+		}
+
+		map.put("result", "success");
+		return map;
+	}
+
 	@GetMapping("/grade/list")
 	public Map<String, Object> getGradeList(HttpServletRequest request) {
 		log.info("실행");
@@ -72,7 +97,7 @@ public class MemberController {
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("result", memberService.applyMemberGrade());
-		
+
 		return map;
 	}
 
