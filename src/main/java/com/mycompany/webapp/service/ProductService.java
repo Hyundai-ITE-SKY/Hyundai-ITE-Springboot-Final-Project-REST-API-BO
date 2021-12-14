@@ -8,6 +8,9 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.mycompany.webapp.dao.productdb.ProductDao;
+import com.mycompany.webapp.dto.Brand;
+import com.mycompany.webapp.dto.CategoryLarge;
+import com.mycompany.webapp.dto.CategoryMedium;
 import com.mycompany.webapp.dto.Color;
 import com.mycompany.webapp.dto.Exhibition;
 import com.mycompany.webapp.dto.Pager;
@@ -103,5 +106,20 @@ public class ProductService {
 	
 	public void updateExhibition(Exhibition exhibition) {
 		productDao.updateExhibition(exhibition);
+
+	public List<Brand> getBrandList() {
+		return productDao.selectBrandList();
+	}
+
+	public List<CategoryLarge> getClarge() {
+		return productDao.selectClarge();
+	}
+
+	public List<CategoryMedium> getCmedium(CategoryLarge clarge) {
+		return productDao.selectCmedium(clarge);
+	}
+
+	public List<String> getCsmall(String clarge, String cmedium){
+		return productDao.selectCsmall(clarge, cmedium);
 	}
 }

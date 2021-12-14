@@ -5,6 +5,8 @@
 	<select id="getMemberList" resultType="member">
 		SELECT *
 		FROM member
+		ORDER
+		BY mid
 	</select>
 
 	<select id="selectByMid" parameterType="string"
@@ -14,12 +16,49 @@
 		WHERE mid=#{mid}
 	</select>
 
+	<delete id="deleteByMid" parameterType="string">
+		DELETE FROM member
+		WHERE
+		mid=#{mid}
+	</delete>
+
+	<insert id="createMember" parameterType="member">
+		INSERT INTO member (mid,
+		mpassword, mname, memail, mtel, mzipcode, maddress1, maddress2,
+		mgrade, mdate, mpoint, menabled, mrole, mtotalpayment)
+		VALUES
+		(#{mid},
+		#{mpassword}, #{mname}, #{memail}, #{mtel}, #{mzipcode},
+		#{maddress1},
+		#{maddress2}, #{mgrade}, #{mdate}, 0, 1, #{mrole}, #{mtotalpayment})
+	</insert>
+
 	<select id="getGradeList" resultType="grade">
 		SELECT *
 		FROM grade
 		ORDER BY
 		gmax
 	</select>
+
+	<select id="getGrade" parameterType="int" resultType="string">
+		SELECT
+		gname
+		FROM (
+		SELECT gname
+		FROM grade
+		WHERE gmax > #{payment}
+		ORDER BY gmax
+		)
+		WHERE ROWNUM = 1
+	</select>
+
+	<update id="setGrade" parameterType="HashMap">
+		UPDATE member SET
+		mgrade =
+		#{grade}
+		WHERE
+		mid = #{mid}
+	</update>
 
 	<insert id="createGrade" parameterType="grade">
 		INSERT INTO grade (gname,
@@ -45,12 +84,17 @@
 	</delete>
 
 	<select id="getEvent" parameterType="pager" resultType="event">
-			SELECT eid, ename, edetail, estartdate, eenddate, eamount, elimit, eimage
-			FROM (SELECT ROWNUM as rnum, eid, ename, edetail, estartdate, eenddate, eamount, elimit, eimage
-					FROM (SELECT eid, ename, edetail, estartdate, eenddate, eamount, elimit, eimage
-							FROM event)
-					WHERE rownum &lt;= #{endRowNo})
-			WHERE rnum &gt;= #{startRowNo}
+		SELECT
+		eid, ename, edetail, estartdate, eenddate, eamount, elimit, eimage
+		FROM (SELECT ROWNUM as rnum, eid, ename, edetail, estartdate,
+		eenddate, eamount, elimit, eimage
+		FROM (SELECT eid, ename, edetail,
+		estartdate, eenddate, eamount, elimit,
+		eimage
+		FROM event)
+		WHERE rownum
+		&lt;= #{endRowNo})
+		WHERE rnum &gt;= #{startRowNo}
 	</select>
 
 	<select id="getEventDetail" resultType="event">
@@ -61,12 +105,12 @@
 		eid=#{eid}
 	</select>
 
-	
+
 	<select id="getTotalEvent" resultType="int">
 		select count(*)
 		from event
 	</select>
-  
+
 	<insert id="createEvent" parameterType="event">
 		INSERT INTO event (eid,
 		ename, edetail, estartdate, eenddate, eamount, elimit, eimage)

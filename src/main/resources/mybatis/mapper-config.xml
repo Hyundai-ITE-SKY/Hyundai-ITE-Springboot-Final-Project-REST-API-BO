@@ -16,5 +16,8 @@
 		<typeAlias type="com.mycompany.webapp.dto.OrderItem" alias="orderitem" />
 		<typeAlias type="com.mycompany.webapp.dto.Event" alias="event" />
 		<typeAlias type="com.mycompany.webapp.dto.Exhibition" alias="exhibition" />
+		<typeAlias type="com.mycompany.webapp.dto.Brand" alias="brand" />
+		<typeAlias type="com.mycompany.webapp.dto.CategoryLarge" alias="clarge" />
+		<typeAlias type="com.mycompany.webapp.dto.CategoryMedium" alias="cmedium" />
 	</typeAliases>
 </configuration>

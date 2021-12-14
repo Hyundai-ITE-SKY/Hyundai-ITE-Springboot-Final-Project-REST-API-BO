@@ -14,8 +14,12 @@ import com.mycompany.webapp.dto.Pager;
 public interface MemberDao {
 	public List<Member> getMemberList();
 	public Member selectByMid(String mid);
+	public int deleteByMid(String mid);
+	public int createMember(Member member);
 
 	public List<Grade> getGradeList();
+	public String getGrade(int payment);
+	public int setGrade(HashMap<String, Object> map);
 	public int createGrade(Grade grade);
 	public int updateGrade(HashMap<String, Object> map);
 	public int deleteGrade(int gmax);

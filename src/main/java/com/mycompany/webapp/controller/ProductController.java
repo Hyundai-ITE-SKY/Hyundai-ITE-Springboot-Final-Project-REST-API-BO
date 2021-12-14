@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mycompany.webapp.dto.Brand;
+import com.mycompany.webapp.dto.CategoryLarge;
+import com.mycompany.webapp.dto.CategoryMedium;
 import com.mycompany.webapp.dto.Color;
 import com.mycompany.webapp.dto.Exhibition;
 import com.mycompany.webapp.dto.Exhibitions;
@@ -36,13 +39,16 @@ public class ProductController {
 	
 	//상품 목록 불러오기
 	@GetMapping("/list/{pageNo}")
-	public List<Product> getProductList(@PathVariable int pageNo) {
+	public Map<String, Object> getProductList(@PathVariable int pageNo) {
 		log.info("실행");
 		int totalRows = productService.getTotalProduct();
 		Pager pager = new Pager(12, 5, totalRows, pageNo);
 		
 		List<Product> productList = productService.getProductList(pager);
-		return productList;
+		Map<String, Object> map = new HashMap<>();
+		map.put("products", productList);
+		map.put("totalRows", totalRows);
+		return map;
 	}
 	
 	//상품 등록하기
@@ -65,7 +71,7 @@ public class ProductController {
 	
 	//상품 상세 조회
 	@GetMapping("/{pid}")
-	public Product getProduct(@PathVariable String pid) {
+	public Map<String, Object> getProduct(@PathVariable String pid) {
 		log.info("실행");
 		Product product = productService.selectWithPid(pid);
 		product.setColors(productService.getProductColors(pid));
@@ -75,114 +81,35 @@ public class ProductController {
 			color.setStocks(stocks);
 		}
 		
-		return product;
+		Map<String, Object> map = new HashMap<>();
+		List<Brand> brandList = productService.getBrandList();
+		map.put("product", product);
+		map.put("brands", brandList);
+		return map;
 	}
 	
-	//상품 수정하기
 	@PostMapping("/update")
-	public Product updateProduct(@RequestBody Product product) {
-		//내가 수정하려는 정보가 담긴 객체는 product product의 pno와 같은 애의 정보를 받아와야함(update할 때 pk가 필요하기 때문)
+	public Map<String, Object> updateProduct(@RequestBody Product afterproduct) {
+		//afterproduct와 같은 pno를 갖고 있는 놈의 pid를 찾아서 정보를 삭제한다.
 		log.info("실행");
-		Product beforeproduct = productService.selectWithPno(product.getPno());
-		beforeproduct.setColors(productService.getProductColors(beforeproduct.getPid()));
-		for(Color color : beforeproduct.getColors()) {
-			List<Stock> stocks = productService.selectStock(beforeproduct.getPid(), color.getCcolorcode());
-			color.setStocks(stocks);
-		}
+		Product beforeproduct = productService.selectWithPno(afterproduct.getPno());
 		String beforePid = beforeproduct.getPid();
-		productService.updateProduct(product, beforePid);
+		productService.removeProduct(beforePid);
 		
-		List<Color> beforecolors = beforeproduct.getColors(); //이전의 색상들
-		List<Color> aftercolors = product.getColors(); //바꾸려는 색상들
+		productService.createProduct(afterproduct); //product테이블에 insert
 		
-		//이전 색상들의 길이가 더 길다는 건 컬러를 삭제했다는 것 --> 길이가 같을 때까지만 update, 그 이상은 delete
-		//이전 색상들의 길이가 더 짧다는 건 컬러를 추가했다는 것 --> 길이가 같을 때까지만 update, 그 이상은 insert
-		if(beforecolors.size() >= aftercolors.size()) {
-			//길이가 같을 때까지만 update
-			for(int i=0; i<aftercolors.size(); i++) {
-				String beforecolor = beforecolors.get(i).getCcolorcode();
-				productService.updateProductColors(aftercolors.get(i), beforePid, beforecolor);
-				
-				//-------------------------test--------------------------------
-				List<Stock> beforestocks = beforecolors.get(i).getStocks();
-				List<Stock> afterstocks = aftercolors.get(i).getStocks();
-				
-				if(beforestocks.size() >= afterstocks.size()) {
-					for(int j=0; j<afterstocks.size(); j++) {
-						String beforesize = beforestocks.get(j).getSsize();
-						productService.updateProductStocks(afterstocks.get(j), beforePid, beforecolor, beforesize);
-					}
-					
-					if(beforestocks.size() > afterstocks.size()) {
-						for(int j=afterstocks.size(); j<beforestocks.size(); j++) {
-							String beforesize = beforestocks.get(j).getSsize();
-							productService.removeProductStocks(beforePid, beforecolor, beforesize);
-						}
-					}
-				}else {
-					for(int j=0; j<beforestocks.size(); j++) {
-						String beforesize = beforestocks.get(j).getCcolorcode();
-						productService.updateProductStocks(afterstocks.get(j), beforePid, beforecolor, beforesize);
-					}
-					for(int j=beforestocks.size(); j<afterstocks.size(); j++) {
-						productService.createStock(afterstocks.get(j));
-					}
-				}
-				//-------------------------test 끝--------------------------------
-			}
-			//컬러 삭제
-			if(beforecolors.size() > aftercolors.size()) {
-				for(int i=aftercolors.size(); i<beforecolors.size(); i++) {
-					String beforecolor = beforecolors.get(i).getCcolorcode();
-					productService.removeProductColors(beforePid, beforecolor);
-				}
-			}
-		}else {//컬러 추가시
-			//길이가 같을 때까지만 update
-			for(int i=0; i<beforecolors.size(); i++) {
-				String beforecolor = beforecolors.get(i).getCcolorcode();
-				productService.updateProductColors(aftercolors.get(i), beforePid, beforecolor);
-				
-				//-------------------------test--------------------------------
-				List<Stock> beforestocks = beforecolors.get(i).getStocks();
-				List<Stock> afterstocks = aftercolors.get(i).getStocks();
-				
-				if(beforestocks.size() >= afterstocks.size()) {
-					for(int j=0; j<afterstocks.size(); j++) {
-						String beforesize = beforestocks.get(j).getSsize();
-						productService.updateProductStocks(afterstocks.get(j), beforePid, beforecolor, beforesize);
-					}
-					
-					if(beforestocks.size() > afterstocks.size()) {
-						for(int j=afterstocks.size(); j<beforestocks.size(); j++) {
-							String beforesize = beforestocks.get(j).getSsize();
-							productService.removeProductStocks(beforePid, beforecolor, beforesize);
-						}
-					}
-				}else {
-					for(int j=0; j<beforestocks.size(); j++) {
-						String beforesize = beforestocks.get(j).getCcolorcode();
-						productService.updateProductStocks(afterstocks.get(j), beforePid, beforecolor, beforesize);
-					}
-					for(int j=beforestocks.size(); j<afterstocks.size(); j++) {
-						productService.createStock(afterstocks.get(j));
-					}
-				}
-				//-------------------------test 끝--------------------------------
-			}
-			//그 이상은 insert
-			for(int i=beforecolors.size(); i<aftercolors.size(); i++) {
-				productService.createColor(aftercolors.get(i));
-				
-				List<Stock> afterstocks = aftercolors.get(i).getStocks();
-				for(Stock afterstock : afterstocks) {
-					productService.createStock(afterstock);
-				}
+		List<Color> colors = afterproduct.getColors();
+		for(Color color : colors) {
+			productService.createColor(color);
+			List<Stock> stocks = color.getStocks();
+			
+			for(Stock stock: stocks) {
+				productService.createStock(stock);
 			}
 		}
-		
-		
-		return beforeproduct;
+		Map<String, Object> map = new HashMap<>();
+		map.put("product", afterproduct);
+		return map;
 	}
 	
 	//상품 삭제하기
@@ -228,4 +155,30 @@ public class ProductController {
 			productService.updateExhibition(ex);
 		}
 	}
+}
+
+ //전체 카테고리 조회
+	@GetMapping("/category")
+	public Map<String, Object> getCategoryList() {
+		log.info("실행");
+		
+		List<CategoryLarge> clarges = productService.getClarge();
+		
+		for(CategoryLarge clarge: clarges) {
+			List<CategoryMedium> cmediums =productService.getCmedium(clarge);
+			
+			for(CategoryMedium cmedium : cmediums) {
+				List<String> csmalls = productService.getCsmall(clarge.getClarge(), cmedium.getCmedium());
+				cmedium.setCsmall(csmalls);
+				cmedium.setCmedium(cmedium.getCmedium());
+			}
+			clarge.setCmedium(cmediums);
+		}
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("category", clarges);
+		
+		return map;
+	}
+	
 }

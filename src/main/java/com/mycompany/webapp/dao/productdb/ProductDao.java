@@ -6,6 +6,9 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.mycompany.webapp.dto.Brand;
+import com.mycompany.webapp.dto.CategoryLarge;
+import com.mycompany.webapp.dto.CategoryMedium;
 import com.mycompany.webapp.dto.Color;
 import com.mycompany.webapp.dto.Exhibition;
 import com.mycompany.webapp.dto.Pager;
@@ -36,4 +39,8 @@ public interface ProductDao {
 	public int deleteByPidColorSize(@Param("pid") String beforePid, @Param("color") String beforecolor, @Param("size") String beforesize);
 	public List<Exhibition> getExhibition();
 	public void updateExhibition(Exhibition exhibition);
+	public List<Brand> selectBrandList();
+	public List<CategoryLarge> selectClarge();
+	public List<CategoryMedium> selectCmedium(CategoryLarge clarge);
+	public List<String> selectCsmall(@Param("clarge")String clarge, @Param("cmedium")String cmedium);
 }
