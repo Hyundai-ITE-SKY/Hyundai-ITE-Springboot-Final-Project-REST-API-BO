@@ -1,5 +1,6 @@
 package com.mycompany.webapp.controller;
 
+import java.io.Console;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,8 @@ import com.mycompany.webapp.dto.Brand;
 import com.mycompany.webapp.dto.CategoryLarge;
 import com.mycompany.webapp.dto.CategoryMedium;
 import com.mycompany.webapp.dto.Color;
+import com.mycompany.webapp.dto.Exhibition;
+import com.mycompany.webapp.dto.Exhibitions;
 import com.mycompany.webapp.dto.Pager;
 import com.mycompany.webapp.dto.Product;
 import com.mycompany.webapp.dto.Stock;
@@ -137,7 +140,24 @@ public class ProductController {
 		return stock;
 	}
 	
-	//전체 카테고리 조회
+	@GetMapping("/exhibition/list")
+	public Map<String, Object> getExhibition() {
+		log.info("실행");
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("exhibitions", productService.getExhibition());
+		return map;
+	}
+	
+	@PostMapping("exhibition/update")
+	public void updateExhibition(@RequestBody Exhibitions exhibitions){
+		for(Exhibition ex : exhibitions.getExhibitions()) {
+			productService.updateExhibition(ex);
+		}
+	}
+}
+
+ //전체 카테고리 조회
 	@GetMapping("/category")
 	public Map<String, Object> getCategoryList() {
 		log.info("실행");

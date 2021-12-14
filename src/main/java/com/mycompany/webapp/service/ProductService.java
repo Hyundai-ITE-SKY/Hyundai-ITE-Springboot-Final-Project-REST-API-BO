@@ -12,6 +12,7 @@ import com.mycompany.webapp.dto.Brand;
 import com.mycompany.webapp.dto.CategoryLarge;
 import com.mycompany.webapp.dto.CategoryMedium;
 import com.mycompany.webapp.dto.Color;
+import com.mycompany.webapp.dto.Exhibition;
 import com.mycompany.webapp.dto.Pager;
 import com.mycompany.webapp.dto.Product;
 import com.mycompany.webapp.dto.Stock;
@@ -98,6 +99,13 @@ public class ProductService {
 	public void removeProductStocks(String beforePid, String beforecolor, String beforesize) {
 		productDao.deleteByPidColorSize(beforePid, beforecolor, beforesize);
 	}
+	
+	public List<Exhibition> getExhibition() {
+		return productDao.getExhibition();
+	}
+	
+	public void updateExhibition(Exhibition exhibition) {
+		productDao.updateExhibition(exhibition);
 
 	public List<Brand> getBrandList() {
 		return productDao.selectBrandList();
