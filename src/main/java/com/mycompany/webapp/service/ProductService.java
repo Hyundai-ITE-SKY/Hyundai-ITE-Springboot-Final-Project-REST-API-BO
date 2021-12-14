@@ -106,7 +106,8 @@ public class ProductService {
 	
 	public void updateExhibition(Exhibition exhibition) {
 		productDao.updateExhibition(exhibition);
-
+	}
+	
 	public List<Brand> getBrandList() {
 		return productDao.selectBrandList();
 	}

@@ -155,7 +155,7 @@ public class ProductController {
 			productService.updateExhibition(ex);
 		}
 	}
-}
+
 
  //전체 카테고리 조회
 	@GetMapping("/category")
