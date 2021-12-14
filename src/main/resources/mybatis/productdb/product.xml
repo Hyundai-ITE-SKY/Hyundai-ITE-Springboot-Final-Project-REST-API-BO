@@ -81,8 +81,8 @@
 	</delete>
 	
 	<insert id="insertProduct" parameterType="product">
-		insert into product(pid, bno, clarge, cmedium, csmall, pno, pname, pprice, pdetail, pseason, ptotalamount)
-		values(#{pid}, #{bno}, #{clarge}, #{cmedium}, #{csmall}, #{pno}, #{pname}, #{pprice}, #{pdetail}, #{pseason}, #{ptotalamount})
+		insert into product(pid, bno, pno, clarge, cmedium, csmall, pname, pprice, pdetail, pseason, ptotalamount)
+		values(#{pid}, #{bno}, seq_pno.nextval, #{clarge}, #{cmedium}, #{csmall}, #{pname}, #{pprice}, #{pdetail}, #{pseason}, 0)
 	</insert>
 	
 	<insert id="insertColor" parameterType="color">
