@@ -134,4 +134,16 @@
 		delete from stock
 		where pid=#{pid} and ccolorcode=#{color} and ssize=#{size}
 	</delete>
+	
+	<select id="getExhibition" resultType="exhibition">
+		select exid, orderno, eximg 
+		from exhibition
+		order by orderno
+	</select>
+	
+	<update id="updateExhibition" parameterType="exhibition">
+		update exhibition
+		set orderno = #{orderno}
+		where exid = #{exid}
+	</update>
 </mapper>

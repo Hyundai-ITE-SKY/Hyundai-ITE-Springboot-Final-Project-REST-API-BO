@@ -1,5 +1,6 @@
 package com.mycompany.webapp.controller;
 
+import java.io.Console;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mycompany.webapp.dto.Color;
+import com.mycompany.webapp.dto.Exhibition;
+import com.mycompany.webapp.dto.Exhibitions;
 import com.mycompany.webapp.dto.Pager;
 import com.mycompany.webapp.dto.Product;
 import com.mycompany.webapp.dto.Stock;
@@ -208,5 +211,21 @@ public class ProductController {
 		log.info("실행");
 		productService.updateStock(stock);
 		return stock;
+	}
+	
+	@GetMapping("/exhibition/list")
+	public Map<String, Object> getExhibition() {
+		log.info("실행");
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("exhibitions", productService.getExhibition());
+		return map;
+	}
+	
+	@PostMapping("exhibition/update")
+	public void updateExhibition(@RequestBody Exhibitions exhibitions){
+		for(Exhibition ex : exhibitions.getExhibitions()) {
+			productService.updateExhibition(ex);
+		}
 	}
 }

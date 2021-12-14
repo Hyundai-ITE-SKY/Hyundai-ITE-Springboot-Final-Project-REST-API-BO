@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.mycompany.webapp.dto.Color;
+import com.mycompany.webapp.dto.Exhibition;
 import com.mycompany.webapp.dto.Pager;
 import com.mycompany.webapp.dto.Product;
 import com.mycompany.webapp.dto.Stock;
@@ -33,4 +34,6 @@ public interface ProductDao {
 	public Product selectWithPno(int pno);
 	public int deleteByPidColor(@Param("pid") String beforePid, @Param("color") String beforecolor);
 	public int deleteByPidColorSize(@Param("pid") String beforePid, @Param("color") String beforecolor, @Param("size") String beforesize);
+	public List<Exhibition> getExhibition();
+	public void updateExhibition(Exhibition exhibition);
 }

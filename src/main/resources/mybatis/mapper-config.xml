@@ -15,5 +15,6 @@
 		<typeAlias type="com.mycompany.webapp.dto.OrderList" alias="orderlist" />
 		<typeAlias type="com.mycompany.webapp.dto.OrderItem" alias="orderitem" />
 		<typeAlias type="com.mycompany.webapp.dto.Event" alias="event" />
+		<typeAlias type="com.mycompany.webapp.dto.Exhibition" alias="exhibition" />
 	</typeAliases>
 </configuration>

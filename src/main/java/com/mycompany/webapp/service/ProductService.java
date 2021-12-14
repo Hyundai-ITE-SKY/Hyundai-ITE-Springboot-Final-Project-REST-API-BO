@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.mycompany.webapp.dao.productdb.ProductDao;
 import com.mycompany.webapp.dto.Color;
+import com.mycompany.webapp.dto.Exhibition;
 import com.mycompany.webapp.dto.Pager;
 import com.mycompany.webapp.dto.Product;
 import com.mycompany.webapp.dto.Stock;
@@ -95,5 +96,12 @@ public class ProductService {
 	public void removeProductStocks(String beforePid, String beforecolor, String beforesize) {
 		productDao.deleteByPidColorSize(beforePid, beforecolor, beforesize);
 	}
-
+	
+	public List<Exhibition> getExhibition() {
+		return productDao.getExhibition();
+	}
+	
+	public void updateExhibition(Exhibition exhibition) {
+		productDao.updateExhibition(exhibition);
+	}
 }
