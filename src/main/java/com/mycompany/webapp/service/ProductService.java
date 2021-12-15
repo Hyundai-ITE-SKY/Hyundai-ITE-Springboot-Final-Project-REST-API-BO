@@ -192,4 +192,8 @@ public class ProductService {
 	public List<String> getCsmall(String clarge, String cmedium) {
 		return productDao.selectCsmall(clarge, cmedium);
 	}
+
+	public List<Product> getSearchList(Product product) {
+		return productDao.selectSearchList(product);
+	}
 }

@@ -172,4 +172,22 @@
 		from category
 		where clarge=#{clarge} and cmedium=#{cmedium}
 	</select>
+	
+	<select id="selectSearchList" parameterType="product" resultType="product">
+		select p.pno as pno, p.pid as pid, p.clarge as clarge, p.cmedium as cmedium, p.csmall as csmall, p.pname as pname, b.bname as bname, p.pprice as pprice
+        from product p, brand b
+        where p.bno = b.bno
+        <choose>
+        	<when test="type!=null and type.equals('pname')">
+        		and pname like concat('%'||#{keyword}, '%')
+        	</when>
+        	<when test="type!=null and type.equals('pid')">
+        		and pid like concat('%'||#{keyword}, '%')
+        	</when>
+        	<when test="type!=null and type.equals('bname')">
+        		and bname like concat('%'||#{keyword}, '%')
+        	</when>
+        </choose>
+        order by p.pno
+	</select>
 </mapper>

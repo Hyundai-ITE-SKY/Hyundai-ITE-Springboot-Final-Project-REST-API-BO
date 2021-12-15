@@ -44,4 +44,5 @@ public interface ProductDao {
 	public List<CategoryMedium> selectCmedium(CategoryLarge clarge);
 	public List<String> selectCsmall(@Param("clarge")String clarge, @Param("cmedium")String cmedium);
 	public int insertProductSamePno(Product afterproduct);
+	public List<Product> selectSearchList(Product product);
 }
