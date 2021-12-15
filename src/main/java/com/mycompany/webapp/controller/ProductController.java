@@ -1,6 +1,5 @@
 package com.mycompany.webapp.controller;
 
-import java.io.Console;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,12 +12,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mycompany.webapp.dto.Brand;
 import com.mycompany.webapp.dto.CategoryLarge;
-import com.mycompany.webapp.dto.CategoryMedium;
-import com.mycompany.webapp.dto.Color;
 import com.mycompany.webapp.dto.Exhibition;
 import com.mycompany.webapp.dto.Exhibitions;
 import com.mycompany.webapp.dto.Pager;
@@ -164,6 +162,22 @@ public class ProductController {
 		map.put("value", productService.getTotalStock());
 		
 		log.info(map+"");
+	}
+
+	@GetMapping("/getSearchList")
+	public Map<String, Object> getSearchList(@RequestParam("type") String type, @RequestParam("keyword") String keyword){
+		log.info("실행");
+		Product product = new Product();
+		product.setType(type);
+		product.setKeyword(keyword);
+		
+		List<Product> productList = productService.getSearchList(product);
+		int totalRows = productList.size();
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("products", productList);
+		map.put("totalRows", totalRows);
+
 		return map;
 	}
 	
