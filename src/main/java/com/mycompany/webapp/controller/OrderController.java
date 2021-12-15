@@ -30,7 +30,7 @@ public class OrderController {
 	public Map<String, Object> getOrderList(@RequestParam("pageNo") int pageNo){
 		log.info("실행");
 		int totalRows = orderService.getTotalOrderList();
-		Pager pager = new Pager(5, 5, totalRows, pageNo);
+		Pager pager = new Pager(12, 5, totalRows, pageNo);
 		List<OrderList> orderLists = orderService.getOrderLists(pager);
 		
 		Map<String, Object> orderListMap = new HashMap<>();

@@ -56,11 +56,11 @@
 	</select>
 	
 	<select id="selectStockList" parameterType="pager" resultType="stocklist">
-		SELECT rnum, bname, pid,pname, ccolorcode, ssize, samount, ptotalamount
+		SELECT rnum, bname, pid,pname, ccolorcode, ssize, samount, ptotalamount, stotalamount
 		FROM(
-			SELECT ROWNUM as rnum, bname, pid,pname, ccolorcode, ssize, samount, ptotalamount
+			SELECT ROWNUM as rnum, bname, pid, pname, ccolorcode, ssize, samount, ptotalamount, stotalamount
 			FROM(
-			    select b.bname, s.pid,p.pname, s.ccolorcode, s.ssize, s.samount, p.ptotalamount
+			    select b.bname, s.pid,p.pname, s.ccolorcode, s.ssize, s.samount, p.ptotalamount, s.stotalamount
 		        from brand b, product p, stock s
 		        where b.bno = p.bno and p.pid = s.pid
 		        order by pid

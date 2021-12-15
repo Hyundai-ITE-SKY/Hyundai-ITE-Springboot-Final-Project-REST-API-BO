@@ -94,20 +94,27 @@ public class ProductController {
 	
 	//상품 재고 목록 불러오기
 	@GetMapping("/stock/list/{pageNo}")
-	public List<StockList> getStockList(@PathVariable int pageNo){
+	public Map<String, Object> getStockList(@PathVariable int pageNo){
 		log.info("실행");
 		int totalRows = productService.getTotalStock();
 		Pager pager = new Pager(12, 5, totalRows, pageNo);
 		List<StockList> stockList = productService.getStockList(pager);
-		return stockList;
+		
+		Map<String, Object> stockListMap = new HashMap<String, Object>();
+		stockListMap.put("stockLists", stockList);
+		log.info("stockList : "+stockList);
+		return stockListMap;
 	}
 	
 	//재고수정
 	@PostMapping("/stock/update")
-	public Stock updateStock(Stock stock) {
+	public Map<String, Object> updateStock(Stock stock) {
 		log.info("실행");
 		productService.updateStock(stock);
-		return stock;
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("stock", stock);
+		return map;
 	}
 	
 	@GetMapping("/exhibition/list")
@@ -147,6 +154,16 @@ public class ProductController {
 		List<Brand> brandList = productService.getBrandList();
 		map.put("brands", brandList);
 		
+		return map;
+	}
+	
+	@GetMapping("/stock/totalrows")
+	public Map<String, Object> getTotalRows(){
+		Map<String, Object> map = new HashMap<>();
+
+		map.put("value", productService.getTotalStock());
+		
+		log.info(map+"");
 		return map;
 	}
 	

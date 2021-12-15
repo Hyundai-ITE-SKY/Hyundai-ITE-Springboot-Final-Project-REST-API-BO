@@ -17,7 +17,7 @@
 			        GROUP BY  L.oid, L.mid, L.ozipcode, L.oaddress1, L.oaddress2, L.odate,
 							L.oreceiver, L.otel, L.ousedmileage, L.ousedcoupon, L.opayment, L.ostatus,
 							L.oaccountdeadline, L.odiscounted,  L.ototal
-					ORDER BY L.odate)
+					ORDER BY L.oid desc)
 				WHERE rownum &lt;= #{endRowNo})
 			WHERE rnum &gt;= #{startRowNo}
 		

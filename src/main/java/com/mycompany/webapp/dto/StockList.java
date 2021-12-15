@@ -11,4 +11,5 @@ public class StockList {
 	private String ssize;
 	private int samount;
 	private int ptotalamount;
+	private int stotalamount;
 }
