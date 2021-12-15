@@ -85,6 +85,11 @@
 		values(#{pid}, #{bno}, seq_pno.nextval, #{clarge}, #{cmedium}, #{csmall}, #{pname}, #{pprice}, #{pdetail}, #{pseason}, 0)
 	</insert>
 	
+	<insert id="insertProductSamePno" parameterType="product">
+		insert into product(pid, bno, pno, clarge, cmedium, csmall, pname, pprice, pdetail, pseason, ptotalamount)
+		values(#{pid}, #{bno}, #{pno}, #{clarge}, #{cmedium}, #{csmall}, #{pname}, #{pprice}, #{pdetail}, #{pseason}, #{ptotalamount})
+	</insert>
+	
 	<insert id="insertColor" parameterType="color">
 		insert into color(pid, ccolorcode, cimage1, cimage2, cimage3, ccolorimage, cmatchpid)
 		values(#{pid}, #{ccolorcode}, #{cimage1}, #{cimage2}, #{cimage3}, #{ccolorimage}, #{cmatchpid})

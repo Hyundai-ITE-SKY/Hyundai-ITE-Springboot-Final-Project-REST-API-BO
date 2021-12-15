@@ -119,7 +119,7 @@ public class ProductService {
 			String beforePid = beforeproduct.getPid();
 			removeProduct(beforePid);
 
-			createProduct(afterproduct); // product테이블에 insert
+			createProductinUpdate(afterproduct); // product테이블에 insert
 
 			List<Color> colors = afterproduct.getColors();
 			for (Color color : colors) {
@@ -133,6 +133,10 @@ public class ProductService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void createProductinUpdate(Product product) {
+			productDao.insertProductSamePno(product);
 	}
 
 	public Product selectWithPno(int pno) {
