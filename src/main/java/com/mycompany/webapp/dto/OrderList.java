@@ -26,4 +26,6 @@ public class OrderList {
 	
 	//주문 상품 개수 추가
 	private int countitem;
+	// 랜덤 추가용 변수
+	private int backDate;
 }
