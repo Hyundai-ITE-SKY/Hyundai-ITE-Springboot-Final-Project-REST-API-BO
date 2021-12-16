@@ -14,4 +14,7 @@ public interface OrderDao {
 	public OrderList getOrderList(String oid);
 	public List<OrderItem> getOrderItem(String oid);
 	public int getTotalOrderList();
+	public int createOrderItem(OrderItem orderItem);
+	public int getCurrentOid();
+	public int createOrderList(OrderList orderList);
 }

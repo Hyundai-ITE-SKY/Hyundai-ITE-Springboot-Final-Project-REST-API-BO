@@ -22,46 +22,60 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/order")
 @Slf4j
 public class OrderController {
-	
+
 	@Resource
 	private OrderService orderService;
-	
+
 	@GetMapping("/list")
-	public Map<String, Object> getOrderList(@RequestParam("pageNo") int pageNo){
+	public Map<String, Object> getOrderList(@RequestParam("pageNo") int pageNo) {
 		log.info("실행");
 		int totalRows = orderService.getTotalOrderList();
 		Pager pager = new Pager(12, 5, totalRows, pageNo);
 		List<OrderList> orderLists = orderService.getOrderLists(pager);
-		
+
 		Map<String, Object> orderListMap = new HashMap<>();
 		orderListMap.put("orderlists", orderLists);
-		
+
 		return orderListMap;
 	}
-	
+
 	@RequestMapping("/detail")
-	public Map<String, Object> getOrderDetail(@RequestParam("oid") String oid){
+	public Map<String, Object> getOrderDetail(@RequestParam("oid") String oid) {
 		log.info("실행");
-		
+
 		OrderList orderList = orderService.getOrderList(oid);
 		List<OrderItem> orderItem = orderService.getOrderItem(oid);
-		
+
 		Map<String, Object> orderDetailMap = new HashMap<>();
 		orderDetailMap.put("orderlist", orderList);
 		orderDetailMap.put("orderitem", orderItem);
 
 		return orderDetailMap;
 	}
-	
+
 	@GetMapping("/totalrows")
-	public Map<String, Object> getTotalRows(){
-		//Integer totalRows = orderService.getTotalOrderList();
+	public Map<String, Object> getTotalRows() {
+		// Integer totalRows = orderService.getTotalOrderList();
 		Map<String, Object> map = new HashMap<>();
 
 		map.put("value", orderService.getTotalOrderList());
-		
-		log.info(map+"");
+
+		log.info(map + "");
 		return map;
 	}
-	
+
+	@GetMapping("/random/create")
+	public Map<String, Object> createRandomOrder(int count) {
+		Map<String, Object> map = new HashMap<>();
+
+		for (int i = 0; i < count; i++) {
+			if (orderService.createRandomOrder().equals("fail")) {
+				map.put("result", "fail");
+				return map;
+			}
+		}
+
+		map.put("result", "success");
+		return map;
+	}
 }

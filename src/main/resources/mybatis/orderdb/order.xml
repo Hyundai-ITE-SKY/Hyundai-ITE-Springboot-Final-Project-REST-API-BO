@@ -41,4 +41,27 @@
 		SELECT COUNT(*)
 		FROM ORDERLIST
 	</select>
+	
+	<insert id="createOrderItem" parameterType="orderitem">
+		INSERT INTO orderitem
+		(oid, pid, ccolorcode, psize, oamount)
+		VALUES
+		(#{oid}, #{pid}, #{ccolorcode}, #{psize}, #{oamount})
+	</insert>
+
+	<insert id="createOrderList" parameterType="orderlist">
+		INSERT INTO orderlist
+		(oid, mid, ozipcode, oaddress1, oaddress2, odate, oreceiver, otel,
+		ousedmileage, ousedcoupon, opayment, ostatus, oaccountdeadline,
+		odiscounted, ototal)
+		VALUES
+		(oid_seq.NEXTVAL, #{mid}, #{ozipcode}, #{oaddress1}, #{oaddress2}, SYSDATE-#{backDate},
+		#{oreceiver}, #{otel}, #{ousedmileage}, #{ousedcoupon}, #{opayment},
+		#{ostatus}, SYSDATE, #{odiscounted}, #{ototal})
+	</insert>
+	
+	<select id="getCurrentOid" resultType="int">
+		SELECT oid_seq.CURRVAL
+		FROM dual
+	</select>
 </mapper>
