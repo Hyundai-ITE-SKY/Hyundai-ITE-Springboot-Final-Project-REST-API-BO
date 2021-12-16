@@ -162,6 +162,7 @@ public class ProductController {
 		map.put("value", productService.getTotalStock());
 		
 		log.info(map+"");
+		return map;
 	}
 
 	@GetMapping("/getSearchList")
