@@ -193,7 +193,11 @@ public class ProductService {
 		return productDao.selectCsmall(clarge, cmedium);
 	}
 
-	public List<Product> getSearchList(Product product) {
-		return productDao.selectSearchList(product);
+	public int getSearchListCount(Product product) {
+		return productDao.selectCountSearchList(product);
+	}
+
+	public List<Product> getSearchList(Product product, Pager pager) {
+		return productDao.selectSearchList(product, pager);
 	}
 }
