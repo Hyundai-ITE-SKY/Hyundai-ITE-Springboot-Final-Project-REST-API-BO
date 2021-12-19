@@ -166,15 +166,16 @@ public class ProductController {
 	}
 
 	@GetMapping("/getSearchList")
-	public Map<String, Object> getSearchList(@RequestParam("type") String type, @RequestParam("keyword") String keyword){
+	public Map<String, Object> getSearchList(@RequestParam("type") String type, @RequestParam("w") String keyword, @RequestParam("pageNo") int pageNo){
 		log.info("실행");
 		Product product = new Product();
 		product.setType(type);
 		product.setKeyword(keyword);
 		
-		List<Product> productList = productService.getSearchList(product);
-		int totalRows = productList.size();
+		int totalRows = productService.getSearchListCount(product);
+		Pager pager = new Pager(12, 5, totalRows, pageNo);
 		
+		List<Product> productList = productService.getSearchList(product, pager);
 		Map<String, Object> map = new HashMap<>();
 		map.put("products", productList);
 		map.put("totalRows", totalRows);

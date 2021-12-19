@@ -173,8 +173,8 @@
 		where clarge=#{clarge} and cmedium=#{cmedium}
 	</select>
 	
-	<select id="selectSearchList" parameterType="product" resultType="product">
-		select p.pno as pno, p.pid as pid, p.clarge as clarge, p.cmedium as cmedium, p.csmall as csmall, p.pname as pname, b.bname as bname, p.pprice as pprice
+	<select id="selectCountSearchList" parameterType="product" resultType="int">
+		select count(*)
         from product p, brand b
         where p.bno = b.bno
         <choose>
@@ -189,5 +189,31 @@
         	</when>
         </choose>
         order by p.pno
+	</select>
+	
+	<select id="selectSearchList" resultType="product">
+        SELECT rnum, pno, pid, clarge, cmedium, csmall, pname, bname, pprice
+		FROM(
+			SELECT ROWNUM as rnum, pno, pid, clarge, cmedium, csmall, pname, bname, pprice
+			FROM(
+			    select p.pno as pno, p.pid as pid, p.clarge as clarge, p.cmedium as cmedium, p.csmall as csmall, p.pname as pname, b.bname as bname, p.pprice as pprice
+		        from product p, brand b
+		        where p.bno = b.bno
+		        <choose>
+		        	<when test="product.type!=null and product.type.equals('pname')">
+		        		and pname like concat('%'||#{product.keyword}, '%')
+		        	</when>
+		        	<when test="product.type!=null and product.type.equals('pid')">
+		        		and pid like concat('%'||#{product.keyword}, '%')
+		        	</when>
+		        	<when test="product.type!=null and product.type.equals('bname')">
+		        		and bname like concat('%'||#{product.keyword}, '%')
+		        	</when>
+		        </choose>
+		        order by p.pno
+				)
+			WHERE ROWNUM &lt;= #{pager.endRowNo}
+			)
+		WHERE rnum &gt;= #{pager.startRowNo}
 	</select>
 </mapper>
