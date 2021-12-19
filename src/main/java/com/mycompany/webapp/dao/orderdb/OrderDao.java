@@ -3,6 +3,7 @@ package com.mycompany.webapp.dao.orderdb;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.mycompany.webapp.dto.OrderItem;
 import com.mycompany.webapp.dto.OrderList;
@@ -17,4 +18,10 @@ public interface OrderDao {
 	public int createOrderItem(OrderItem orderItem);
 	public int getCurrentOid();
 	public int createOrderList(OrderList orderList);
+	public int selectCountSearchList(@Param("type") String type, @Param("keyword") String keyword, @Param("startdate") String startdate, @Param("enddate") String enddate);
+	public List<OrderList> selectSearchList(@Param("type") String type,
+											@Param("keyword") String keyword,
+											@Param("pager") Pager pager,
+											@Param("startdate") String startdate,
+											@Param("enddate") String enddate);
 }

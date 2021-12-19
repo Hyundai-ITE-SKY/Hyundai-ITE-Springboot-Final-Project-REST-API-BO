@@ -78,4 +78,24 @@ public class OrderController {
 		map.put("result", "success");
 		return map;
 	}
+	
+	@GetMapping("/getSearchList")
+	public Map<String, Object> getSearchList(@RequestParam String type, @RequestParam String keyword, @RequestParam int pageNo, @RequestParam String startdate, @RequestParam String enddate){
+		log.info("실행");
+		log.info(type);
+		log.info(keyword);
+		log.info(startdate);
+		log.info(enddate);
+		
+		int totalRows = orderService.getSearchListCount(type, keyword, startdate, enddate);
+		Pager pager = new Pager(12, 5, totalRows, pageNo);
+		log.info(totalRows+"");
+		List<OrderList> orderlist = orderService.getSearchList(type, keyword, pager, startdate, enddate);
+		log.info(orderlist+"");
+		Map<String, Object> orderListMap = new HashMap<>();
+		orderListMap.put("orderlists", orderlist);
+		orderListMap.put("totalRows", totalRows);
+		
+		return orderListMap;
+	}
 }

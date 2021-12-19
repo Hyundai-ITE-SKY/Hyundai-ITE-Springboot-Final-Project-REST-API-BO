@@ -143,4 +143,12 @@ public class OrderService {
 
 		return "success";
 	}
+
+	public int getSearchListCount(String type, String keyword, String startdate, String enddate) {
+		return orderDao.selectCountSearchList(type, keyword, startdate, enddate);
+	}
+
+	public List<OrderList> getSearchList(String type, String keyword, Pager pager, String startdate, String enddate) {
+		return orderDao.selectSearchList(type, keyword, pager, startdate, enddate);
+	}
 }
