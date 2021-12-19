@@ -2,51 +2,59 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.mycompany.webapp.dao.orderdb.OrderDao">
-		<select id="getOrderLists" parameterType="pager" resultType="orderlist">
-			SELECT oid, mid, ozipcode, oaddress1, oaddress2, odate,
-						oreceiver, otel, ousedmileage, ousedcoupon, opayment, ostatus,
-						oaccountdeadline, odiscounted, ototal, countitem
-			FROM (SELECT ROWNUM as rnum, oid, mid, ozipcode, oaddress1, oaddress2, odate,
-						oreceiver, otel, ousedmileage, ousedcoupon, opayment, ostatus,
-						oaccountdeadline, odiscounted, ototal, countitem
-				FROM (SELECT L.oid, L.mid, L.ozipcode, L.oaddress1, L.oaddress2, L.odate,
-							L.oreceiver, L.otel, L.ousedmileage, L.ousedcoupon, L.opayment, L.ostatus,
-							L.oaccountdeadline, L.odiscounted, L.ototal, COUNT(*) as countitem
-					FROM ORDERLIST L, ORDERITEM I
-			        WHERE L.oid = I.oid
-			        GROUP BY  L.oid, L.mid, L.ozipcode, L.oaddress1, L.oaddress2, L.odate,
-							L.oreceiver, L.otel, L.ousedmileage, L.ousedcoupon, L.opayment, L.ostatus,
-							L.oaccountdeadline, L.odiscounted,  L.ototal
-					ORDER BY L.oid desc)
-				WHERE rownum &lt;= #{endRowNo})
-			WHERE rnum &gt;= #{startRowNo}
-		
+	<select id="getOrderLists" parameterType="pager"
+		resultType="orderlist">
+		SELECT oid, mid, ozipcode, oaddress1, oaddress2, odate,
+		oreceiver, otel, ousedmileage, ousedcoupon, opayment, ostatus,
+		oaccountdeadline, odiscounted, ototal, countitem
+		FROM (SELECT ROWNUM as rnum, oid, mid, ozipcode, oaddress1, oaddress2,
+		odate,
+		oreceiver, otel, ousedmileage, ousedcoupon, opayment, ostatus,
+		oaccountdeadline, odiscounted, ototal, countitem
+		FROM (SELECT L.oid, L.mid, L.ozipcode, L.oaddress1, L.oaddress2, L.odate,
+		L.oreceiver, L.otel, L.ousedmileage, L.ousedcoupon, L.opayment,
+		L.ostatus,
+		L.oaccountdeadline, L.odiscounted, L.ototal, COUNT(*) as countitem
+		FROM ORDERLIST L, ORDERITEM I
+		WHERE L.oid = I.oid
+		GROUP BY L.oid, L.mid, L.ozipcode, L.oaddress1, L.oaddress2, L.odate,
+		L.oreceiver, L.otel, L.ousedmileage, L.ousedcoupon, L.opayment,
+		L.ostatus,
+		L.oaccountdeadline, L.odiscounted, L.ototal
+		ORDER BY L.oid desc)
+		WHERE rownum &lt;= #{endRowNo})
+		WHERE rnum &gt;= #{startRowNo}
+
 	</select>
-	
-	<select id="getOrderList" parameterType="string" resultType="orderlist">
+
+	<select id="getOrderList" parameterType="string"
+		resultType="orderlist">
 		SELECT oid, mid, ozipcode, oaddress1, oaddress2, odate,
 		oreceiver, otel, ousedmileage, ousedcoupon, opayment, ostatus,
 		oaccountdeadline, odiscounted, ototal
 		FROM ORDERLIST
 		WHERE OID=#{oid}
 	</select>
-	
-	<select id="getOrderItem" parameterType="string" resultType="orderitem">
+
+	<select id="getOrderItem" parameterType="string"
+		resultType="orderitem">
 		SELECT oid, pid, ccolorcode, psize, oamount
 		FROM ORDERITEM
 		WHERE OID=#{oid}
 	</select>
-	
+
 	<select id="getTotalOrderList" resultType="int">
 		SELECT COUNT(*)
-		FROM ORDERLIST
+		FROM
+		ORDERLIST
 	</select>
-	
+
 	<insert id="createOrderItem" parameterType="orderitem">
 		INSERT INTO orderitem
 		(oid, pid, ccolorcode, psize, oamount)
 		VALUES
-		(#{oid}, #{pid}, #{ccolorcode}, #{psize}, #{oamount})
+		(#{oid}, #{pid},
+		#{ccolorcode}, #{psize}, #{oamount})
 	</insert>
 
 	<insert id="createOrderList" parameterType="orderlist">
@@ -55,13 +63,76 @@
 		ousedmileage, ousedcoupon, opayment, ostatus, oaccountdeadline,
 		odiscounted, ototal)
 		VALUES
-		(oid_seq.NEXTVAL, #{mid}, #{ozipcode}, #{oaddress1}, #{oaddress2}, SYSDATE-#{backDate},
-		#{oreceiver}, #{otel}, #{ousedmileage}, #{ousedcoupon}, #{opayment},
-		#{ostatus}, SYSDATE, #{odiscounted}, #{ototal})
+		(oid_seq.NEXTVAL, #{mid}, #{ozipcode},
+		#{oaddress1}, #{oaddress2}, SYSDATE-#{backDate},
+		#{oreceiver}, #{otel},
+		#{ousedmileage}, #{ousedcoupon}, #{opayment},
+		#{ostatus}, SYSDATE,
+		#{odiscounted}, #{ototal})
 	</insert>
-	
+
 	<select id="getCurrentOid" resultType="int">
 		SELECT oid_seq.CURRVAL
 		FROM dual
+	</select>
+
+	<select id="selectCountSearchList" resultType="int">
+		SELECT count(*)
+		FROM ORDERLIST L, ORDERITEM I
+		WHERE L.oid = I.oid
+		<choose>
+			<when test="type!=null and type.equals('mid')">
+				and mid like concat('%'||#{keyword}, '%')
+			</when>
+			<when test="type!=null and type.equals('oreceiver')">
+				and oreceiver like concat('%'||#{keyword}, '%')
+			</when>
+		</choose>
+
+		<choose>
+			<when test="startdate!='' and enddate!=''">
+				and odate between to_date(#{startdate}, 'YYYY-MM-DD') and
+				to_date(#{enddate}, 'YYYY-MM-DD')
+			</when>
+		</choose>
+	</select>
+
+	<select id="selectSearchList" resultType="orderlist">
+		SELECT oid, mid, ozipcode, oaddress1, oaddress2, odate,
+		oreceiver, otel, ousedmileage, ousedcoupon, opayment, ostatus,
+		oaccountdeadline, odiscounted, ototal, countitem
+		FROM (SELECT ROWNUM as rnum, oid, mid, ozipcode, oaddress1, oaddress2,
+		odate,
+		oreceiver, otel, ousedmileage, ousedcoupon, opayment, ostatus,
+		oaccountdeadline, odiscounted, ototal, countitem
+		FROM (SELECT L.oid, L.mid, L.ozipcode, L.oaddress1, L.oaddress2, L.odate,
+		L.oreceiver, L.otel, L.ousedmileage, L.ousedcoupon, L.opayment,
+		L.ostatus,
+		L.oaccountdeadline, L.odiscounted, L.ototal, COUNT(*) as countitem
+		FROM ORDERLIST L, ORDERITEM I
+		WHERE L.oid = I.oid
+		<choose>
+			<when test="type!=null and type.equals('mid')">
+				and mid like concat('%'||#{keyword}, '%')
+			</when>
+			<when test="type!=null and type.equals('oreceiver')">
+				and oreceiver like concat('%'||#{keyword}, '%')
+			</when>
+		</choose>
+
+		<choose>
+			<when test="startdate!='' and enddate!=''">
+				and odate between to_date(#{startdate}, 'YYYY-MM-DD') and
+				to_date(#{enddate}, 'YYYY-MM-DD')
+			</when>
+		</choose>
+
+		GROUP BY L.oid, L.mid, L.ozipcode, L.oaddress1, L.oaddress2, L.odate,
+		L.oreceiver, L.otel, L.ousedmileage, L.ousedcoupon, L.opayment,
+		L.ostatus,
+		L.oaccountdeadline, L.odiscounted, L.ototal
+		ORDER BY L.oid desc)
+		WHERE rownum &lt;= #{pager.endRowNo})
+		WHERE rnum &gt;= #{pager.startRowNo}
 	</select>
 </mapper>
