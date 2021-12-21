@@ -16,6 +16,7 @@ import com.mycompany.webapp.dto.Color;
 import com.mycompany.webapp.dto.Member;
 import com.mycompany.webapp.dto.OrderItem;
 import com.mycompany.webapp.dto.OrderList;
+import com.mycompany.webapp.dto.OrderPerDay;
 import com.mycompany.webapp.dto.Pager;
 import com.mycompany.webapp.dto.Product;
 import com.mycompany.webapp.dto.Stock;
@@ -150,5 +151,25 @@ public class OrderService {
 
 	public List<OrderList> getSearchList(String type, String keyword, Pager pager, String startdate, String enddate) {
 		return orderDao.selectSearchList(type, keyword, pager, startdate, enddate);
+	}
+	
+	public List<OrderList> getMonthOrderList(){
+		return orderDao.getMonthOrderList();
+	}
+	
+	public List<OrderList> getTodayOrderList(){
+		return orderDao.getTodayOrderList();
+	}
+	
+	public List<OrderPerDay> getOrderPerDay() {
+		return orderDao.getOrderPerDay();
+	}
+	
+	public List<OrderPerDay> orderPerDayWithPerson(){
+		return orderDao.orderPerDayWithPerson();
+	}
+	
+	public List<OrderList> getOrderListByMonth(int month) {
+		return orderDao.getOrderListByMonth(month);
 	}
 }

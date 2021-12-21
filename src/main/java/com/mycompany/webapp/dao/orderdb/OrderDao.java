@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.mycompany.webapp.dto.OrderItem;
 import com.mycompany.webapp.dto.OrderList;
+import com.mycompany.webapp.dto.OrderPerDay;
 import com.mycompany.webapp.dto.Pager;
 
 @Mapper
@@ -24,4 +25,9 @@ public interface OrderDao {
 											@Param("pager") Pager pager,
 											@Param("startdate") String startdate,
 											@Param("enddate") String enddate);
+	public List<OrderList> getMonthOrderList();
+	public List<OrderList> getTodayOrderList();
+	public List<OrderPerDay> getOrderPerDay();
+	public List<OrderPerDay> orderPerDayWithPerson();
+	public List<OrderList> getOrderListByMonth(int month);
 }

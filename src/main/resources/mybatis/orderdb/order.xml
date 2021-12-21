@@ -130,4 +130,45 @@
 		WHERE rownum &lt;= #{pager.endRowNo})
 		WHERE rnum &gt;= #{pager.startRowNo}
 	</select>
+	
+	<select id="getMonthOrderList" resultType="orderlist">
+		SELECT oid, mid, ozipcode, oaddress1, oaddress2, odate,
+			oreceiver, otel, ousedmileage, ousedcoupon, opayment, ostatus,
+			oaccountdeadline, odiscounted, ototal
+		FROM ORDERLIST
+		WHERE EXTRACT( YEAR FROM ODATE ) = EXTRACT( YEAR FROM SYSDATE )
+			AND EXTRACT( MONTH FROM ODATE ) = EXTRACT( MONTH FROM SYSDATE )
+	</select>
+	<select id="getTodayOrderList" resultType="orderlist">
+		SELECT oid, mid, ozipcode, oaddress1, oaddress2, odate,
+			oreceiver, otel, ousedmileage, ousedcoupon, opayment, ostatus,
+			oaccountdeadline, odiscounted, ototal
+		FROM ORDERLIST
+		WHERE EXTRACT( YEAR FROM ODATE ) = EXTRACT( YEAR FROM SYSDATE )
+			AND EXTRACT( MONTH FROM ODATE ) = EXTRACT( MONTH FROM SYSDATE )
+			AND EXTRACT( DAY FROM ODATE ) = EXTRACT( DAY FROM SYSDATE )
+	</select>
+	
+	<select id="getOrderPerDay" resultType="orderperday">
+		SELECT (EXTRACT(YEAR FROM ODATE) || EXTRACT(MONTH FROM ODATE) ||EXTRACT(DAY FROM ODATE))AS ODATE, COUNT(*) AS NUM
+		FROM ORDERLIST
+		GROUP BY EXTRACT( YEAR FROM ODATE ), EXTRACT( MONTH FROM ODATE ), EXTRACT(DAY FROM ODATE)
+		ORDER BY ODATE
+	</select>
+	
+	<select id="orderPerDayWithPerson" resultType="orderperday">
+		SELECT (EXTRACT(YEAR FROM ODATE) || EXTRACT(MONTH FROM ODATE) ||EXTRACT(DAY FROM ODATE))AS ODATE, COUNT(*) AS NUM
+		FROM ORDERLIST
+		GROUP BY EXTRACT( YEAR FROM ODATE ), EXTRACT( MONTH FROM ODATE ), EXTRACT(DAY FROM ODATE), mid
+		ORDER BY ODATE
+	</select>
+	
+	<select id="getOrderListByMonth" parameterType="int" resultType="orderlist">
+		SELECT oid, mid, ozipcode, oaddress1, oaddress2, odate,
+			oreceiver, otel, ousedmileage, ousedcoupon, opayment, ostatus,
+			oaccountdeadline, odiscounted, ototal
+		FROM ORDERLIST
+		WHERE EXTRACT( YEAR FROM ODATE ) = EXTRACT( YEAR FROM SYSDATE )
+			AND EXTRACT( MONTH FROM ODATE ) = #{month}
+	</select>
 </mapper>
