@@ -92,7 +92,7 @@ public class OrderService {
 			orderlist.setOusedmileage(0);
 			orderlist.setOusedcoupon(0);
 			orderlist.setOpayment(0);
-			orderlist.setOstatus(0);
+			orderlist.setOstatus(1);
 			orderlist.setBackDate((int) (Math.random() * 60));
 
 			int n = (int) (Math.random() * 3) + 1;

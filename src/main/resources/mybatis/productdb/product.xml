@@ -15,7 +15,7 @@
 			    select p.pno as pno, p.pid as pid, p.clarge as clarge, p.cmedium as cmedium, p.csmall as csmall, p.pname as pname, b.bname as bname, p.pprice as pprice
 		        from product p join brand b
 		        on p.bno = b.bno
-		        order by p.pno
+		        order by p.pno desc
 				)
 			WHERE ROWNUM &lt;= #{pager.endRowNo}
 			)
@@ -188,7 +188,7 @@
         		and bname like concat('%'||#{keyword}, '%')
         	</when>
         </choose>
-        order by p.pno
+        order by p.pno desc
 	</select>
 	
 	<select id="selectSearchList" resultType="product">
@@ -210,7 +210,7 @@
 		        		and bname like concat('%'||#{product.keyword}, '%')
 		        	</when>
 		        </choose>
-		        order by p.pno
+		        order by p.pno desc
 				)
 			WHERE ROWNUM &lt;= #{pager.endRowNo}
 			)
