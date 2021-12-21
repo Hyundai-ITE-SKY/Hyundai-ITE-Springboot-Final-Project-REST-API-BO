@@ -166,9 +166,18 @@ public class ProductController {
 	}
 
 	@GetMapping("/getSearchList")
-	public Map<String, Object> getSearchList(@RequestParam("type") String type, @RequestParam("w") String keyword, @RequestParam("pageNo") int pageNo){
+	public Map<String, Object> getSearchList(@RequestParam("type") String type,
+											 @RequestParam("w") String keyword,
+											 @RequestParam("pageNo") int pageNo,
+											 @RequestParam("clarge") String clarge,
+											 @RequestParam("cmedium") String cmedium,
+											 @RequestParam("csmall") String csmall
+											 ){
 		log.info("실행");
 		Product product = new Product();
+		product.setClarge(clarge);
+		product.setCmedium(cmedium);
+		product.setCsmall(csmall);
 		product.setType(type);
 		product.setKeyword(keyword);
 		
@@ -180,6 +189,22 @@ public class ProductController {
 		map.put("products", productList);
 		map.put("totalRows", totalRows);
 
+		return map;
+	}
+	
+	@GetMapping("/getSearchStockList")
+	public Map<String, Object> getSearchStockList(@RequestParam("type") String type,
+												  @RequestParam("w") String keyword,
+												  @RequestParam("pageNo") int pageNo)
+	{
+		log.info("실행");
+		int totalRows = productService.getStockSearchListCount(type, keyword);
+		Pager pager = new Pager(12, 5, totalRows, pageNo);
+		
+		List<StockList> stockList = productService.getStockSearchList(type,keyword, pager);
+		Map<String, Object> map = new HashMap<>();
+		map.put("stockLists", stockList);
+		map.put("totalRows", totalRows);
 		return map;
 	}
 	

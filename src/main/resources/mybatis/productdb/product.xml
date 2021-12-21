@@ -15,7 +15,7 @@
 			    select p.pno as pno, p.pid as pid, p.clarge as clarge, p.cmedium as cmedium, p.csmall as csmall, p.pname as pname, b.bname as bname, p.pprice as pprice
 		        from product p join brand b
 		        on p.bno = b.bno
-		        order by p.pno
+		        order by p.pno desc
 				)
 			WHERE ROWNUM &lt;= #{pager.endRowNo}
 			)
@@ -188,7 +188,16 @@
         		and bname like concat('%'||#{keyword}, '%')
         	</when>
         </choose>
-        order by p.pno
+        <if test="clarge!=''">
+        	and clarge = #{clarge}
+	       	<if test="cmedium!=''">
+	       		and cmedium = #{cmedium}
+		   		<if test="csmall!=''">
+		   			and csmall = #{csmall}
+		   		</if>
+	       	</if>
+        </if>
+        order by p.pno desc
 	</select>
 	
 	<select id="selectSearchList" resultType="product">
@@ -210,7 +219,59 @@
 		        		and bname like concat('%'||#{product.keyword}, '%')
 		        	</when>
 		        </choose>
-		        order by p.pno
+		        <if test="product.clarge!=''">
+		        	and clarge = #{product.clarge}
+			       	<if test="product.cmedium!=''">
+			       		and cmedium = #{product.cmedium}
+				   		<if test="product.csmall!=''">
+				   			and csmall = #{product.csmall}
+				   		</if>
+			       	</if>
+		        </if>
+		        order by p.pno desc
+				)
+			WHERE ROWNUM &lt;= #{pager.endRowNo}
+			)
+		WHERE rnum &gt;= #{pager.startRowNo}
+	</select>
+	
+	<select id="selectCountStockSearchList" resultType="int">
+		select count(*)
+		from brand b, product p, stock s
+		where b.bno = p.bno and p.pid = s.pid
+        <choose>
+        	<when test="type!=null and type.equals('pname')">
+        		and UPPER(p.pname) like concat('%'||UPPER(#{keyword}), '%')
+        	</when>
+        	<when test="type!=null and type.equals('pid')">
+        		and UPPER(p.pid) like concat('%'||UPPER(#{keyword}), '%')
+        	</when>
+        	<when test="type!=null and type.equals('bname')">
+        		and UPPER(b.bname) like concat('%'||UPPER(#{keyword}), '%')
+        	</when>
+        </choose>
+	</select>
+	
+	<select id="selectStockSearchList" resultType="stocklist">
+		SELECT rnum, bname, pid,pname, ccolorcode, ssize, samount, ptotalamount, stotalamount
+		FROM(
+			SELECT ROWNUM as rnum, bname, pid, pname, ccolorcode, ssize, samount, ptotalamount, stotalamount
+			FROM(
+			    select b.bname, s.pid,p.pname, s.ccolorcode, s.ssize, s.samount, p.ptotalamount, s.stotalamount
+		        from brand b, product p, stock s
+		        where b.bno = p.bno and p.pid = s.pid
+		        <choose>
+		        	<when test="type!=null and type.equals('pname')">
+		        		and UPPER(p.pname) like concat('%'||UPPER(#{keyword}), '%')
+		        	</when>
+		        	<when test="type!=null and type.equals('pid')">
+		        		and UPPER(p.pid) like concat('%'||UPPER(#{keyword}), '%')
+		        	</when>
+		        	<when test="type!=null and type.equals('bname')">
+		        		and UPPER(b.bname) like concat('%'||UPPER(#{keyword}), '%')
+		        	</when>
+		        </choose>
+		        order by p.pid
 				)
 			WHERE ROWNUM &lt;= #{pager.endRowNo}
 			)
