@@ -200,4 +200,12 @@ public class ProductService {
 	public List<Product> getSearchList(Product product, Pager pager) {
 		return productDao.selectSearchList(product, pager);
 	}
+
+	public int getStockSearchListCount(String type, String keyword) {
+		return productDao.selectCountStockSearchList(type,keyword);
+	}
+
+	public List<StockList> getStockSearchList(String type, String keyword, Pager pager) {
+		return productDao.selectStockSearchList(type, keyword, pager);
+	}
 }
