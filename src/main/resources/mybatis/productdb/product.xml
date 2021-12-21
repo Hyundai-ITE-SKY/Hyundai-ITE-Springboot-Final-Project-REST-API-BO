@@ -277,4 +277,14 @@
 			)
 		WHERE rnum &gt;= #{pager.startRowNo}
 	</select>
+	<select id="getTotalPrice" resultType="int">
+		select sum(ptotalamount*pprice)
+		from product
+	</select>
+	
+	<select id="getProduct" resultType="product">
+		select pno, pid, clarge, cmedium, csmall, pname, pprice
+		from product
+		where pid=#{pid}
+	</select>
 </mapper>
