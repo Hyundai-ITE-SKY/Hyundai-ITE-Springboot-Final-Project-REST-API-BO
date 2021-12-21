@@ -46,4 +46,6 @@ public interface ProductDao {
 	public int insertProductSamePno(Product afterproduct);
 	public int selectCountSearchList(Product product);
 	public List<Product> selectSearchList(@Param("product") Product product, @Param("pager") Pager pager);
+	public int selectCountStockSearchList(@Param("type") String type, @Param("keyword")String keyword);
+	public List<StockList> selectStockSearchList(@Param("type") String type,  @Param("keyword")String keyword,  @Param("pager")Pager pager);
 }
