@@ -17,6 +17,7 @@ import com.mycompany.webapp.dto.Member;
 import com.mycompany.webapp.dto.OrderItem;
 import com.mycompany.webapp.dto.OrderList;
 import com.mycompany.webapp.dto.OrderPerDay;
+import com.mycompany.webapp.dto.OrderState;
 import com.mycompany.webapp.dto.Pager;
 import com.mycompany.webapp.dto.Product;
 import com.mycompany.webapp.dto.Stock;
@@ -171,5 +172,14 @@ public class OrderService {
 	
 	public List<OrderList> getOrderListByMonth(int month) {
 		return orderDao.getOrderListByMonth(month);
+	}
+
+	public OrderState getTotalOrderState() {
+		OrderState os = new OrderState();
+		os.setFinPayCount(orderDao.selectCountFinPay());
+		os.setShippingCount(orderDao.selectCountShipping());
+		os.setFinShippingCount(orderDao.selectCountFinShipping());
+		os.setConfirmOrderCount(orderDao.selectCountConfirmOrder());
+		return os;
 	}
 }
