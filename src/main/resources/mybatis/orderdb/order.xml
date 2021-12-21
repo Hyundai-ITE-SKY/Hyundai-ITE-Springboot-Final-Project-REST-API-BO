@@ -87,7 +87,7 @@
 		<choose>
 			<when test="startdate!='' and enddate!=''">
 				and odate between to_date(#{startdate}, 'YYYY-MM-DD') and
-				to_date(#{enddate}, 'YYYY-MM-DD')
+				to_date(#{enddate}, 'YYYY-MM-DD') + 0.99999
 			</when>
 		</choose>
 	</select>
