@@ -48,4 +48,6 @@ public interface ProductDao {
 	public List<Product> selectSearchList(@Param("product") Product product, @Param("pager") Pager pager);
 	public int selectCountStockSearchList(@Param("type") String type, @Param("keyword")String keyword);
 	public List<StockList> selectStockSearchList(@Param("type") String type,  @Param("keyword")String keyword,  @Param("pager")Pager pager);
+	public int getTotalPrice();
+	public Product getProduct(String pid);
 }

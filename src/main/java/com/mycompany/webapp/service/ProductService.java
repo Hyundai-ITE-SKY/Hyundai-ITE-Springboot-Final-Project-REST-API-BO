@@ -208,4 +208,12 @@ public class ProductService {
 	public List<StockList> getStockSearchList(String type, String keyword, Pager pager) {
 		return productDao.selectStockSearchList(type, keyword, pager);
 	}
+	
+	public int getTotalPrice() {
+		return productDao.getTotalPrice();
+	}
+	
+	public Product getProduct(String pid) {
+		return productDao.getProduct(pid);
+	}
 }
