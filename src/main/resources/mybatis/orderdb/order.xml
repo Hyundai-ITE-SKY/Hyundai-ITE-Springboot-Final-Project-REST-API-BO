@@ -150,17 +150,17 @@
 	</select>
 	
 	<select id="getOrderPerDay" resultType="orderperday">
-		SELECT (EXTRACT(YEAR FROM ODATE) || EXTRACT(MONTH FROM ODATE) ||EXTRACT(DAY FROM ODATE))AS ODATE, COUNT(*) AS NUM
+		SELECT (EXTRACT(YEAR FROM ODATE) || EXTRACT(MONTH FROM ODATE) ||EXTRACT(DAY FROM ODATE))AS OODATE, COUNT(*) AS NUM
 		FROM ORDERLIST
 		GROUP BY EXTRACT( YEAR FROM ODATE ), EXTRACT( MONTH FROM ODATE ), EXTRACT(DAY FROM ODATE)
-		ORDER BY ODATE
+		ORDER BY OODATE
 	</select>
 	
 	<select id="orderPerDayWithPerson" resultType="orderperday">
-		SELECT (EXTRACT(YEAR FROM ODATE) || EXTRACT(MONTH FROM ODATE) ||EXTRACT(DAY FROM ODATE))AS ODATE, COUNT(*) AS NUM
-		FROM ORDERLIST
-		GROUP BY EXTRACT( YEAR FROM ODATE ), EXTRACT( MONTH FROM ODATE ), EXTRACT(DAY FROM ODATE), mid
-		ORDER BY ODATE
+		select to_char(odate, 'yyyymmdd') as oodate, count(distinct(mid)) num
+		from orderlist
+		group by to_char(odate, 'yyyymmdd')
+		order by to_char(odate, 'yyyymmdd')
 	</select>
 	
 	<select id="getOrderListByMonth" parameterType="int" resultType="orderlist">
