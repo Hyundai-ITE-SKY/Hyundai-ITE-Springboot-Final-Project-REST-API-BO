@@ -39,14 +39,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.csrf().disable();
 
 		// 요청 경로 권한 설정
-		http.authorizeRequests().antMatchers("/member/**").authenticated().antMatchers("/**").permitAll();
+		http.authorizeRequests().antMatchers("/**").authenticated().antMatchers("/**").permitAll();
 
 		// 세션 비활성화
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
-		// JwtCheckFiler 추가W
-		JwtCheckFilter jwtCheckFilter = new JwtCheckFilter();
-		http.addFilterBefore(jwtCheckFilter, UsernamePasswordAuthenticationFilter.class);
 
 		// CORS 설정 활성화
 		http.cors();

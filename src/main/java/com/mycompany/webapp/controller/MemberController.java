@@ -28,7 +28,7 @@ public class MemberController {
 	private MemberService memberService;
 
 	@GetMapping("/list")
-	public Map<String, Object> getMemberList(HttpServletRequest request) {
+	public Map<String, Object> getMemberList() {
 		log.info("실행");
 
 		Map<String, Object> map = new HashMap<String, Object>();
