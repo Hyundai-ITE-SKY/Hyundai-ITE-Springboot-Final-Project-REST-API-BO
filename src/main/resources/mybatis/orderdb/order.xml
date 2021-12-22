@@ -171,4 +171,17 @@
 		WHERE EXTRACT( YEAR FROM ODATE ) = EXTRACT( YEAR FROM SYSDATE )
 			AND EXTRACT( MONTH FROM ODATE ) = #{month}
 	</select>
+	
+	<select id="selectCountFinPay" resultType="int">
+		select count(*) from orderlist where ostatus=1
+	</select>
+	<select id="selectCountShipping" resultType="int">
+		select count(*) from orderlist where ostatus=2
+	</select>
+	<select id="selectCountFinShipping" resultType="int">
+		select count(*) from orderlist where ostatus=3
+	</select>
+	<select id="selectCountConfirmOrder" resultType="int">
+		select count(*) from orderlist where ostatus=4
+	</select>
 </mapper>

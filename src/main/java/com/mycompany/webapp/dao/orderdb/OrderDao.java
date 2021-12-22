@@ -30,4 +30,8 @@ public interface OrderDao {
 	public List<OrderPerDay> getOrderPerDay();
 	public List<OrderPerDay> orderPerDayWithPerson();
 	public List<OrderList> getOrderListByMonth(int month);
+	public int selectCountFinPay();
+	public int selectCountShipping();
+	public int selectCountFinShipping();
+	public int selectCountConfirmOrder();
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mycompany.webapp.dto.OrderItem;
 import com.mycompany.webapp.dto.OrderList;
 import com.mycompany.webapp.dto.OrderPerDay;
+import com.mycompany.webapp.dto.OrderState;
 import com.mycompany.webapp.dto.Product;
 import com.mycompany.webapp.service.OrderService;
 import com.mycompany.webapp.service.ProductService;
@@ -28,6 +29,19 @@ public class DashboardController {
 	private ProductService productService;
 	@Resource
 	private OrderService orderService;
+	
+	//주문/배송
+	@GetMapping("/orderState")
+	public Map<String, Object> totalOrderState(){
+		log.info("실행");
+		Map<String, Object> map = new HashMap<String, Object>();
+		OrderState ostate = orderService.getTotalOrderState();
+		map.put("finPayCount", ostate.getFinPayCount());
+		map.put("shippingCount", ostate.getShippingCount());
+		map.put("finShippingCount", ostate.getFinShippingCount());
+		map.put("confirmOrderCount", ostate.getConfirmOrderCount());
+		return map;
+	}
 	
 	//총 매출액
 	@GetMapping("/totalprice")
