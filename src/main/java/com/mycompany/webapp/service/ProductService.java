@@ -137,7 +137,7 @@ public class ProductService {
 	}
 
 	private void createProductinUpdate(Product product) {
-			productDao.insertProductSamePno(product);
+		productDao.insertProductSamePno(product);
 	}
 
 	public Product selectWithPno(int pno) {
@@ -151,15 +151,15 @@ public class ProductService {
 	public void removeProductStocks(String beforePid, String beforecolor, String beforesize) {
 		productDao.deleteByPidColorSize(beforePid, beforecolor, beforesize);
 	}
-	
+
 	public List<Exhibition> getExhibition() {
 		return productDao.getExhibition();
 	}
-	
+
 	public void updateExhibition(Exhibition exhibition) {
 		productDao.updateExhibition(exhibition);
 	}
-	
+
 	public List<Brand> getBrandList() {
 		return productDao.selectBrandList();
 	}
@@ -203,26 +203,35 @@ public class ProductService {
 	}
 
 	public int getStockSearchListCount(String type, String keyword) {
-		return productDao.selectCountStockSearchList(type,keyword);
+		return productDao.selectCountStockSearchList(type, keyword);
 	}
 
 	public List<StockList> getStockSearchList(String type, String keyword, Pager pager) {
 		return productDao.selectStockSearchList(type, keyword, pager);
 	}
-	
+
 	public int getTotalPrice() {
 		return productDao.getTotalPrice();
 	}
-	
+
 	public Product getProduct(String pid) {
 		return productDao.getProduct(pid);
 	}
-	
+
 	public List<Review> getReviewList() {
-		return productDao.getReviewList() ;
+		return productDao.getReviewList();
 	}
-	
+
 	public Review getReview(int rno) {
-		return productDao.getReview(rno) ;
+		return productDao.getReview(rno);
+	}
+
+	public int updateReviewAnswer(int rno, String content) {
+		HashMap<String, Object> rnoContent = new HashMap<String, Object>();
+
+		rnoContent.put("rno", rno);
+		rnoContent.put("ranswer", content);
+
+		return productDao.updateReviewAnswer(rnoContent);
 	}
 }

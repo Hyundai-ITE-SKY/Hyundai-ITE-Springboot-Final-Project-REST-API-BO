@@ -205,6 +205,7 @@
 		set orderno = #{orderno}
 		where exid = #{exid}
 	</update>
+
 	<select id="selectBrandList" resultType="brand">
 		select bno, bname
 		from
@@ -356,6 +357,7 @@
 		WHERE rnum &gt;=
 		#{pager.startRowNo}
 	</select>
+
 	<select id="getTotalPrice" resultType="int">
 		select
 		sum(ptotalamount*pprice)
@@ -381,4 +383,11 @@
 		from review
 		where rno=#{rno}
 	</select>
+
+	<update id="updateReviewAnswer" parameterType="HashMap">
+		update review
+		set
+		ranswer = #{ranswer}
+		where rno = #{rno}
+	</update>
 </mapper>
