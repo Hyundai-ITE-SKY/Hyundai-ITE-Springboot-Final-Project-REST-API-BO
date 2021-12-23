@@ -40,13 +40,16 @@ public class ProductController {
 	@GetMapping("/list/{pageNo}")
 	public Map<String, Object> getProductList(@PathVariable int pageNo) {
 		log.info("실행");
+
 		int totalRows = productService.getTotalProduct();
 		Pager pager = new Pager(12, 5, totalRows, pageNo);
 
 		List<Product> productList = productService.getProductList(pager);
 		Map<String, Object> map = new HashMap<>();
+
 		map.put("products", productList);
 		map.put("totalRows", totalRows);
+
 		return map;
 	}
 
@@ -78,6 +81,7 @@ public class ProductController {
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("product", afterproduct);
+
 		return map;
 	}
 
@@ -98,12 +102,13 @@ public class ProductController {
 	public Map<String, Object> getStockList(@PathVariable int pageNo) {
 		log.info("실행");
 		int totalRows = productService.getTotalStock();
+
 		Pager pager = new Pager(12, 5, totalRows, pageNo);
 		List<StockList> stockList = productService.getStockList(pager);
 
 		Map<String, Object> stockListMap = new HashMap<String, Object>();
 		stockListMap.put("stockLists", stockList);
-		log.info("stockList : " + stockList);
+
 		return stockListMap;
 	}
 
@@ -115,15 +120,17 @@ public class ProductController {
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("stock", stock);
+
 		return map;
 	}
 
 	@GetMapping("/exhibition/list")
 	public Map<String, Object> getExhibition() {
 		log.info("실행");
-		Map<String, Object> map = new HashMap<>();
 
+		Map<String, Object> map = new HashMap<>();
 		map.put("exhibitions", productService.getExhibition());
+
 		return map;
 	}
 
@@ -140,8 +147,8 @@ public class ProductController {
 		log.info("실행");
 
 		List<CategoryLarge> clarges = productService.getCategoryList();
-
 		Map<String, Object> map = new HashMap<>();
+
 		map.put("category", clarges);
 
 		return map;
@@ -162,10 +169,8 @@ public class ProductController {
 	@GetMapping("/stock/totalrows")
 	public Map<String, Object> getTotalRows() {
 		Map<String, Object> map = new HashMap<>();
-
 		map.put("value", productService.getTotalStock());
 
-		log.info(map + "");
 		return map;
 	}
 
@@ -174,7 +179,9 @@ public class ProductController {
 			@RequestParam("pageNo") int pageNo, @RequestParam("clarge") String clarge,
 			@RequestParam("cmedium") String cmedium, @RequestParam("csmall") String csmall) {
 		log.info("실행");
+
 		Product product = new Product();
+
 		product.setClarge(clarge);
 		product.setCmedium(cmedium);
 		product.setCsmall(csmall);
@@ -186,6 +193,7 @@ public class ProductController {
 
 		List<Product> productList = productService.getSearchList(product, pager);
 		Map<String, Object> map = new HashMap<>();
+
 		map.put("products", productList);
 		map.put("totalRows", totalRows);
 
@@ -201,6 +209,7 @@ public class ProductController {
 
 		List<StockList> stockList = productService.getStockSearchList(type, keyword, pager);
 		Map<String, Object> map = new HashMap<>();
+
 		map.put("stockLists", stockList);
 		map.put("totalRows", totalRows);
 
@@ -212,8 +221,8 @@ public class ProductController {
 		log.info("실행");
 
 		List<Review> reviewList = productService.getReviewList();
-
 		Map<String, Object> map = new HashMap<>();
+
 		map.put("reviewList", reviewList);
 
 		return map;
@@ -231,7 +240,6 @@ public class ProductController {
 	@PostMapping("/review/answer/update")
 	public Map<String, Object> updateReviewAnswer(int rno, String content) {
 		productService.updateReviewAnswer(rno, content);
-		log.info(rno + content);
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("result", "success");
