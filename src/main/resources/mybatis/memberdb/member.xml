@@ -130,13 +130,13 @@
 		#{eenddate},
 		eamount = #{eamount},
 		elimit = #{elimit},
-		eimage = #{eimage},
+		eimage = #{eimage}
 		WHERE eid = #{eid}
 	</update>
 
 	<delete id="deleteEvent" parameterType="int">
 		DELETE FROM event
-		WHERE		
+		WHERE eid = #{eid}
 	</delete>
 	
 	<update id="updateEventOrder" parameterType="event">
