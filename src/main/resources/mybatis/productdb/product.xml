@@ -6,41 +6,57 @@
 		select count(*)
 		from product
 	</select>
-	
-	<select id="selectProductList" parameterType="pager" resultType="product">
-		SELECT rnum, pno, pid, clarge, cmedium, csmall, pname, bname, pprice
+
+	<select id="selectProductList" parameterType="pager"
+		resultType="product">
+		SELECT rnum, pno, pid, clarge, cmedium, csmall, pname,
+		bname, pprice
 		FROM(
-			SELECT ROWNUM as rnum, pno, pid, clarge, cmedium, csmall, pname, bname, pprice
-			FROM(
-			    select p.pno as pno, p.pid as pid, p.clarge as clarge, p.cmedium as cmedium, p.csmall as csmall, p.pname as pname, b.bname as bname, p.pprice as pprice
-		        from product p join brand b
-		        on p.bno = b.bno
-		        order by p.pno desc
-				)
-			WHERE ROWNUM &lt;= #{pager.endRowNo}
-			)
+		SELECT ROWNUM as rnum, pno, pid, clarge, cmedium,
+		csmall, pname, bname,
+		pprice
+		FROM(
+		select p.pno as pno, p.pid as pid,
+		p.clarge as clarge, p.cmedium as cmedium,
+		p.csmall as csmall, p.pname
+		as pname, b.bname as bname, p.pprice as
+		pprice
+		from product p join brand
+		b
+		on p.bno = b.bno
+		order by p.pno desc
+		)
+		WHERE ROWNUM &lt;=
+		#{pager.endRowNo}
+		)
 		WHERE rnum &gt;= #{pager.startRowNo}
 	</select>
-	
-	<select id="selectProductWithPid" parameterType="string" resultType="product">
-		SELECT p.pid as pid, b.bno as bno, b.bname as bname, p.clarge as clarge,
+
+	<select id="selectProductWithPid" parameterType="string"
+		resultType="product">
+		SELECT p.pid as pid, b.bno as bno, b.bname as bname,
+		p.clarge as clarge,
 		p.cmedium as cmedium, p.csmall as csmall,
-		p.pno as pno, p.pname as
-		pname, p.pprice as pprice, p.pdetail as pdetail, p.pseason as pseason,
+		p.pno as
+		pno, p.pname as
+		pname, p.pprice as pprice, p.pdetail as pdetail,
+		p.pseason as pseason,
 		p.ptotalamount as ptotalamount
-		FROM product p, brand b
+		FROM product p,
+		brand b
 		WHERE pid = #{pid}
 		AND b.bno = p.bno
 	</select>
-	
-	<select id="selectProductColors" parameterType="String" resultType="color">
+
+	<select id="selectProductColors" parameterType="String"
+		resultType="color">
 		SELECT
 		pid, ccolorcode, cimage1, cimage2, cimage3,
 		ccolorimage, cmatchpid
 		FROM color
 		WHERE pid = #{pid}
 	</select>
-	
+
 	<select id="selectProductStock" parameterType="HashMap"
 		resultType="stock">
 		SELECT
@@ -50,102 +66,140 @@
 		#{pid}
 		AND ccolorcode = #{colorcode}
 	</select>
-	
+
 	<select id="countStock" resultType="int">
 		select count(*) from stock
 	</select>
-	
-	<select id="selectStockList" parameterType="pager" resultType="stocklist">
-		SELECT rnum, bname, pid,pname, ccolorcode, ssize, samount, ptotalamount, stotalamount
+
+	<select id="selectStockList" parameterType="pager"
+		resultType="stocklist">
+		SELECT rnum, bname, pid,pname, ccolorcode, ssize, samount,
+		ptotalamount, stotalamount
 		FROM(
-			SELECT ROWNUM as rnum, bname, pid, pname, ccolorcode, ssize, samount, ptotalamount, stotalamount
-			FROM(
-			    select b.bname, s.pid,p.pname, s.ccolorcode, s.ssize, s.samount, p.ptotalamount, s.stotalamount
-		        from brand b, product p, stock s
-		        where b.bno = p.bno and p.pid = s.pid
-		        order by pid
-				)
-			WHERE ROWNUM &lt;= #{pager.endRowNo}
-			)
+		SELECT ROWNUM as rnum, bname, pid,
+		pname, ccolorcode, ssize, samount,
+		ptotalamount, stotalamount
+		FROM(
+		select b.bname, s.pid,p.pname, s.ccolorcode, s.ssize, s.samount,
+		p.ptotalamount, s.stotalamount
+		from brand b, product p, stock s
+		where
+		b.bno = p.bno and p.pid = s.pid
+		order by pid
+		)
+		WHERE ROWNUM &lt;=
+		#{pager.endRowNo}
+		)
 		WHERE rnum &gt;= #{pager.startRowNo}
 	</select>
-	
+
 	<update id="updateStock" parameterType="stock">
 		update stock
-		set samount=#{samount}
-		where pid=#{pid} and ccolorcode=#{ccolorcode} and ssize=#{ssize}
+		set
+		samount=#{samount}
+		where pid=#{pid} and ccolorcode=#{ccolorcode} and
+		ssize=#{ssize}
 	</update>
-	
+
 	<delete id="deleteByPid" parameterType="string">
-		delete from product where pid=#{pid}
+		delete from product where
+		pid=#{pid}
 	</delete>
-	
+
 	<insert id="insertProduct" parameterType="product">
-		insert into product(pid, bno, pno, clarge, cmedium, csmall, pname, pprice, pdetail, pseason, ptotalamount)
-		values(#{pid}, #{bno}, seq_pno.nextval, #{clarge}, #{cmedium}, #{csmall}, #{pname}, #{pprice}, #{pdetail}, #{pseason}, 0)
+		insert into
+		product(pid, bno, pno, clarge, cmedium, csmall, pname, pprice,
+		pdetail, pseason, ptotalamount)
+		values(#{pid}, #{bno}, seq_pno.nextval,
+		#{clarge}, #{cmedium}, #{csmall}, #{pname}, #{pprice}, #{pdetail},
+		#{pseason}, 0)
 	</insert>
-	
+
 	<insert id="insertProductSamePno" parameterType="product">
-		insert into product(pid, bno, pno, clarge, cmedium, csmall, pname, pprice, pdetail, pseason, ptotalamount)
-		values(#{pid}, #{bno}, #{pno}, #{clarge}, #{cmedium}, #{csmall}, #{pname}, #{pprice}, #{pdetail}, #{pseason}, #{ptotalamount})
+		insert into
+		product(pid, bno, pno, clarge, cmedium, csmall, pname, pprice,
+		pdetail, pseason, ptotalamount)
+		values(#{pid}, #{bno}, #{pno},
+		#{clarge}, #{cmedium}, #{csmall}, #{pname}, #{pprice}, #{pdetail},
+		#{pseason}, #{ptotalamount})
 	</insert>
-	
+
 	<insert id="insertColor" parameterType="color">
-		insert into color(pid, ccolorcode, cimage1, cimage2, cimage3, ccolorimage, cmatchpid)
-		values(#{pid}, #{ccolorcode}, #{cimage1}, #{cimage2}, #{cimage3}, #{ccolorimage}, #{cmatchpid})
+		insert into color(pid,
+		ccolorcode, cimage1, cimage2, cimage3, ccolorimage, cmatchpid)
+		values(#{pid}, #{ccolorcode}, #{cimage1}, #{cimage2}, #{cimage3},
+		#{ccolorimage}, #{cmatchpid})
 	</insert>
-	
+
 	<insert id="insertStock" parameterType="stock">
-		insert into stock(pid, ccolorcode, ssize, samount)
-		values(#{pid}, #{ccolorcode}, #{ssize}, #{samount})
+		insert into stock(pid,
+		ccolorcode, ssize, samount)
+		values(#{pid}, #{ccolorcode}, #{ssize},
+		#{samount})
 	</insert>
-	
-	<select id="selectWithPno" parameterType="int" resultType="product">
+
+	<select id="selectWithPno" parameterType="int"
+		resultType="product">
 		SELECT p.pid as pid, b.bname as bname, p.clarge as clarge,
 		p.cmedium as cmedium, p.csmall as csmall,
 		p.pno as pno, p.pname as
 		pname, p.pprice as pprice, p.pdetail as pdetail, p.pseason as pseason,
 		p.ptotalamount as ptotalamount
 		FROM product p, brand b
-		WHERE pno = #{pno}
+		WHERE pno =
+		#{pno}
 		AND b.bno = p.bno
 	</select>
-	
+
 	<update id="updateProduct">
 		update product
-		set pid=#{product.pid}, bno=#{product.bno}, clarge=#{product.clarge}, cmedium=#{product.cmedium}, csmall=#{product.csmall}, pname=#{product.pname},
-		pprice=#{product.pprice}, pdetail=#{product.pdetail}, pseason=#{product.pseason}
-		where pid=#{beforepid}
+		set pid=#{product.pid},
+		bno=#{product.bno}, clarge=#{product.clarge},
+		cmedium=#{product.cmedium}, csmall=#{product.csmall},
+		pname=#{product.pname},
+		pprice=#{product.pprice},
+		pdetail=#{product.pdetail}, pseason=#{product.pseason}
+		where
+		pid=#{beforepid}
 	</update>
-	
+
 	<update id="updateProductColors">
 		update color
-		set ccolorcode=#{color.ccolorcode}, cimage1=#{color.cimage1}, cimage2=#{color.cimage2}, cimage3=#{color.cimage3}, ccolorimage=#{color.ccolorimage}, cmatchpid=#{color.cmatchpid}
-		where pid=#{beforepid} and ccolorcode=#{beforecolor} 
+		set ccolorcode=#{color.ccolorcode},
+		cimage1=#{color.cimage1}, cimage2=#{color.cimage2},
+		cimage3=#{color.cimage3}, ccolorimage=#{color.ccolorimage},
+		cmatchpid=#{color.cmatchpid}
+		where pid=#{beforepid} and
+		ccolorcode=#{beforecolor}
 	</update>
-	
+
 	<delete id="deleteByPidColor">
 		delete from color
-		where pid=#{pid} and ccolorcode=#{color}
+		where pid=#{pid} and
+		ccolorcode=#{color}
 	</delete>
-	
+
 	<update id="updateProductStocks">
 		update stock
-		set ssize=#{stock.ssize}, samount=#{stock.samount}
-		where pid=#{pid} and ccolorcode=#{color} and ssize=#{size}
+		set ssize=#{stock.ssize},
+		samount=#{stock.samount}
+		where pid=#{pid} and ccolorcode=#{color} and
+		ssize=#{size}
 	</update>
-	
+
 	<delete id="deleteByPidColorSize">
 		delete from stock
-		where pid=#{pid} and ccolorcode=#{color} and ssize=#{size}
+		where pid=#{pid} and
+		ccolorcode=#{color} and ssize=#{size}
 	</delete>
-	
+
 	<select id="getExhibition" resultType="exhibition">
-		select exid, orderno, eximg 
+		select exid, orderno,
+		eximg
 		from exhibition
 		order by orderno
 	</select>
-	
+
 	<update id="updateExhibition" parameterType="exhibition">
 		update exhibition
 		set orderno = #{orderno}
@@ -153,138 +207,178 @@
 	</update>
 	<select id="selectBrandList" resultType="brand">
 		select bno, bname
-		from brand
+		from
+		brand
 	</select>
-	
+
 	<select id="selectClarge" resultType="clarge">
 		select distinct clarge
-		from category
+		from
+		category
 	</select>
-	
-	<select id="selectCmedium" parameterType="clarge" resultType="cmedium">
+
+	<select id="selectCmedium" parameterType="clarge"
+		resultType="cmedium">
 		select distinct cmedium
 		from category
 		where clarge=#{clarge}
 	</select>
-	
+
 	<select id="selectCsmall" resultType="string">
 		select csmall
 		from category
 		where clarge=#{clarge} and cmedium=#{cmedium}
 	</select>
-	
-	<select id="selectCountSearchList" parameterType="product" resultType="int">
+
+	<select id="selectCountSearchList" parameterType="product"
+		resultType="int">
 		select count(*)
-        from product p, brand b
-        where p.bno = b.bno
-        <choose>
-        	<when test="type!=null and type.equals('pname')">
-        		and pname like concat('%'||#{keyword}, '%')
-        	</when>
-        	<when test="type!=null and type.equals('pid')">
-        		and pid like concat('%'||#{keyword}, '%')
-        	</when>
-        	<when test="type!=null and type.equals('bname')">
-        		and bname like concat('%'||#{keyword}, '%')
-        	</when>
-        </choose>
-        <if test="clarge!=''">
-        	and clarge = #{clarge}
-	       	<if test="cmedium!=''">
-	       		and cmedium = #{cmedium}
-		   		<if test="csmall!=''">
-		   			and csmall = #{csmall}
-		   		</if>
-	       	</if>
-        </if>
-        order by p.pno desc
+		from product p, brand b
+		where p.bno = b.bno
+		<choose>
+			<when test="type!=null and type.equals('pname')">
+				and pname like concat('%'||#{keyword}, '%')
+			</when>
+			<when test="type!=null and type.equals('pid')">
+				and pid like concat('%'||#{keyword}, '%')
+			</when>
+			<when test="type!=null and type.equals('bname')">
+				and bname like concat('%'||#{keyword}, '%')
+			</when>
+		</choose>
+		<if test="clarge!=''">
+			and clarge = #{clarge}
+			<if test="cmedium!=''">
+				and cmedium = #{cmedium}
+				<if test="csmall!=''">
+					and csmall = #{csmall}
+				</if>
+			</if>
+		</if>
+		order by p.pno desc
 	</select>
-	
+
 	<select id="selectSearchList" resultType="product">
-        SELECT rnum, pno, pid, clarge, cmedium, csmall, pname, bname, pprice
+		SELECT rnum, pno, pid, clarge, cmedium, csmall, pname, bname, pprice
 		FROM(
-			SELECT ROWNUM as rnum, pno, pid, clarge, cmedium, csmall, pname, bname, pprice
-			FROM(
-			    select p.pno as pno, p.pid as pid, p.clarge as clarge, p.cmedium as cmedium, p.csmall as csmall, p.pname as pname, b.bname as bname, p.pprice as pprice
-		        from product p, brand b
-		        where p.bno = b.bno
-		        <choose>
-		        	<when test="product.type!=null and product.type.equals('pname')">
-		        		and pname like concat('%'||#{product.keyword}, '%')
-		        	</when>
-		        	<when test="product.type!=null and product.type.equals('pid')">
-		        		and pid like concat('%'||#{product.keyword}, '%')
-		        	</when>
-		        	<when test="product.type!=null and product.type.equals('bname')">
-		        		and bname like concat('%'||#{product.keyword}, '%')
-		        	</when>
-		        </choose>
-		        <if test="product.clarge!=''">
-		        	and clarge = #{product.clarge}
-			       	<if test="product.cmedium!=''">
-			       		and cmedium = #{product.cmedium}
-				   		<if test="product.csmall!=''">
-				   			and csmall = #{product.csmall}
-				   		</if>
-			       	</if>
-		        </if>
-		        order by p.pno desc
-				)
-			WHERE ROWNUM &lt;= #{pager.endRowNo}
-			)
-		WHERE rnum &gt;= #{pager.startRowNo}
+		SELECT ROWNUM as rnum, pno, pid, clarge, cmedium, csmall, pname,
+		bname,
+		pprice
+		FROM(
+		select p.pno as pno, p.pid as pid, p.clarge as
+		clarge, p.cmedium as cmedium,
+		p.csmall as csmall, p.pname as pname,
+		b.bname as bname, p.pprice as
+		pprice
+		from product p, brand b
+		where p.bno
+		= b.bno
+		<choose>
+			<when test="product.type!=null and product.type.equals('pname')">
+				and pname like concat('%'||#{product.keyword}, '%')
+			</when>
+			<when test="product.type!=null and product.type.equals('pid')">
+				and pid like concat('%'||#{product.keyword}, '%')
+			</when>
+			<when test="product.type!=null and product.type.equals('bname')">
+				and bname like concat('%'||#{product.keyword}, '%')
+			</when>
+		</choose>
+		<if test="product.clarge!=''">
+			and clarge = #{product.clarge}
+			<if test="product.cmedium!=''">
+				and cmedium = #{product.cmedium}
+				<if test="product.csmall!=''">
+					and csmall = #{product.csmall}
+				</if>
+			</if>
+		</if>
+		order by p.pno desc
+		)
+		WHERE ROWNUM &lt;= #{pager.endRowNo}
+		)
+		WHERE rnum
+		&gt;= #{pager.startRowNo}
 	</select>
-	
+
 	<select id="selectCountStockSearchList" resultType="int">
 		select count(*)
 		from brand b, product p, stock s
-		where b.bno = p.bno and p.pid = s.pid
-        <choose>
-        	<when test="type!=null and type.equals('pname')">
-        		and UPPER(p.pname) like concat('%'||UPPER(#{keyword}), '%')
-        	</when>
-        	<when test="type!=null and type.equals('pid')">
-        		and UPPER(p.pid) like concat('%'||UPPER(#{keyword}), '%')
-        	</when>
-        	<when test="type!=null and type.equals('bname')">
-        		and UPPER(b.bname) like concat('%'||UPPER(#{keyword}), '%')
-        	</when>
-        </choose>
+		where b.bno = p.bno and
+		p.pid = s.pid
+		<choose>
+			<when test="type!=null and type.equals('pname')">
+				and UPPER(p.pname) like
+				concat('%'||UPPER(#{keyword}), '%')
+			</when>
+			<when test="type!=null and type.equals('pid')">
+				and UPPER(p.pid) like concat('%'||UPPER(#{keyword}),
+				'%')
+			</when>
+			<when test="type!=null and type.equals('bname')">
+				and UPPER(b.bname) like
+				concat('%'||UPPER(#{keyword}), '%')
+			</when>
+		</choose>
 	</select>
-	
+
 	<select id="selectStockSearchList" resultType="stocklist">
-		SELECT rnum, bname, pid,pname, ccolorcode, ssize, samount, ptotalamount, stotalamount
+		SELECT rnum, bname, pid,pname, ccolorcode, ssize, samount,
+		ptotalamount, stotalamount
 		FROM(
-			SELECT ROWNUM as rnum, bname, pid, pname, ccolorcode, ssize, samount, ptotalamount, stotalamount
-			FROM(
-			    select b.bname, s.pid,p.pname, s.ccolorcode, s.ssize, s.samount, p.ptotalamount, s.stotalamount
-		        from brand b, product p, stock s
-		        where b.bno = p.bno and p.pid = s.pid
-		        <choose>
-		        	<when test="type!=null and type.equals('pname')">
-		        		and UPPER(p.pname) like concat('%'||UPPER(#{keyword}), '%')
-		        	</when>
-		        	<when test="type!=null and type.equals('pid')">
-		        		and UPPER(p.pid) like concat('%'||UPPER(#{keyword}), '%')
-		        	</when>
-		        	<when test="type!=null and type.equals('bname')">
-		        		and UPPER(b.bname) like concat('%'||UPPER(#{keyword}), '%')
-		        	</when>
-		        </choose>
-		        order by p.pid
-				)
-			WHERE ROWNUM &lt;= #{pager.endRowNo}
-			)
-		WHERE rnum &gt;= #{pager.startRowNo}
+		SELECT ROWNUM as rnum, bname, pid,
+		pname, ccolorcode, ssize, samount,
+		ptotalamount, stotalamount
+		FROM(
+		select b.bname, s.pid,p.pname, s.ccolorcode, s.ssize, s.samount,
+		p.ptotalamount, s.stotalamount
+		from brand b, product p, stock s
+		where
+		b.bno = p.bno and p.pid = s.pid
+		<choose>
+			<when test="type!=null and type.equals('pname')">
+				and UPPER(p.pname) like
+				concat('%'||UPPER(#{keyword}), '%')
+			</when>
+			<when test="type!=null and type.equals('pid')">
+				and UPPER(p.pid) like concat('%'||UPPER(#{keyword}),
+				'%')
+			</when>
+			<when test="type!=null and type.equals('bname')">
+				and UPPER(b.bname) like
+				concat('%'||UPPER(#{keyword}), '%')
+			</when>
+		</choose>
+		order by p.pid
+		)
+		WHERE ROWNUM &lt;= #{pager.endRowNo}
+		)
+		WHERE rnum &gt;=
+		#{pager.startRowNo}
 	</select>
 	<select id="getTotalPrice" resultType="int">
-		select sum(ptotalamount*pprice)
+		select
+		sum(ptotalamount*pprice)
 		from product
 	</select>
-	
+
 	<select id="getProduct" resultType="product">
-		select pno, pid, clarge, cmedium, csmall, pname, pprice
+		select pno, pid, clarge,
+		cmedium, csmall, pname, pprice
 		from product
 		where pid=#{pid}
+	</select>
+
+	<select id="getReviewList" resultType="review">
+		select *
+		from review
+		order
+		by rno desc
+	</select>
+
+	<select id="getReview" parameterType="int" resultType="review">
+		select *
+		from review
+		where rno=#{rno}
 	</select>
 </mapper>

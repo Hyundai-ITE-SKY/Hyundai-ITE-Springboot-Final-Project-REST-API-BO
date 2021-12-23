@@ -21,6 +21,7 @@ import com.mycompany.webapp.dto.Exhibition;
 import com.mycompany.webapp.dto.Exhibitions;
 import com.mycompany.webapp.dto.Pager;
 import com.mycompany.webapp.dto.Product;
+import com.mycompany.webapp.dto.Review;
 import com.mycompany.webapp.dto.Stock;
 import com.mycompany.webapp.dto.StockList;
 import com.mycompany.webapp.service.ProductService;
@@ -208,4 +209,24 @@ public class ProductController {
 		return map;
 	}
 	
+	@GetMapping("/reviewlist")
+	public Map<String, Object> getReviewList() {
+		log.info("실행");
+
+		List<Review> reviewList = productService.getReviewList();
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("reviewList", reviewList);
+		
+		return map;
+	}
+	
+	@GetMapping("/review")
+	public Review getReview(int rno) {
+		log.info("실행");
+
+		Review review = productService.getReview(rno);
+		
+		return review;
+	}
 }
