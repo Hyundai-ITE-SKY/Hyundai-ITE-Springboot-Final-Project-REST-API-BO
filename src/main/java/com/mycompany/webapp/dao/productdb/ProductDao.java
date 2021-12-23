@@ -53,4 +53,5 @@ public interface ProductDao {
 	public Product getProduct(String pid);
 	public List<Review> getReviewList();
 	public Review getReview(int rno);
+	public int updateReviewAnswer(HashMap<String, Object> rnoContent);
 }
