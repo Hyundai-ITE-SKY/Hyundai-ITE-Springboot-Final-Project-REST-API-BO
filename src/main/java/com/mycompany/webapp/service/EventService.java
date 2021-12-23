@@ -47,4 +47,9 @@ public class EventService {
 		log.info("실행");
 		return memberDao.getTotalEvent();
 	}
+	
+	public int updateEventOrder(Event event) {
+		log.info("실행");
+		return memberDao.updateEventOrder(event);
+	}
 }

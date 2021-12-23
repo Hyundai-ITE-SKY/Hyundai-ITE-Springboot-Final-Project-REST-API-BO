@@ -30,4 +30,5 @@ public interface MemberDao {
 	public int updateEvent(Event event);
 	public int deleteEvent(int eid);
 	public int getTotalEvent();
+	public int updateEventOrder(Event event);
 }

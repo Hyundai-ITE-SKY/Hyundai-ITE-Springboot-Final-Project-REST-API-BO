@@ -10,11 +10,13 @@ import org.springframework.jmx.export.naming.IdentityNamingStrategy;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mycompany.webapp.dto.Event;
+import com.mycompany.webapp.dto.Events;
 import com.mycompany.webapp.dto.OrderList;
 import com.mycompany.webapp.dto.Pager;
 import com.mycompany.webapp.service.EventService;
@@ -93,6 +95,19 @@ public class EventController {
 		Map<String, Object> map = new HashMap<>();
 		map.put("value", eventService.deleteEvent(eid));
 		
+		return map;
+	}
+	
+	@PostMapping("/updateeorder")
+	public Map<String, Object> updateEventOrder(@RequestBody Events events){
+		log.info("실행"); 
+		log.info("event"+events); 
+		Map<String, Object> map = new HashMap<>();
+
+		for(Event event : events.getEvents()) {
+			eventService.updateEventOrder(event);
+			map.put("value", eventService.updateEventOrder(event));
+		}
 		return map;
 	}
 }
