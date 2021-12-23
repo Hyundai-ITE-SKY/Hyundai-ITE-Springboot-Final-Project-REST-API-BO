@@ -13,6 +13,7 @@ import com.mycompany.webapp.dto.Color;
 import com.mycompany.webapp.dto.Exhibition;
 import com.mycompany.webapp.dto.Pager;
 import com.mycompany.webapp.dto.Product;
+import com.mycompany.webapp.dto.Review;
 import com.mycompany.webapp.dto.Stock;
 import com.mycompany.webapp.dto.StockList;
 
@@ -50,4 +51,6 @@ public interface ProductDao {
 	public List<StockList> selectStockSearchList(@Param("type") String type,  @Param("keyword")String keyword,  @Param("pager")Pager pager);
 	public int getTotalPrice();
 	public Product getProduct(String pid);
+	public List<Review> getReviewList();
+	public Review getReview(int rno);
 }

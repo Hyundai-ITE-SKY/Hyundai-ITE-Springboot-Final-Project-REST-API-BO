@@ -20,5 +20,6 @@
 		<typeAlias type="com.mycompany.webapp.dto.CategoryLarge" alias="clarge" />
 		<typeAlias type="com.mycompany.webapp.dto.CategoryMedium" alias="cmedium" />
 		<typeAlias type="com.mycompany.webapp.dto.OrderPerDay" alias="orderperday" />	
+		<typeAlias type="com.mycompany.webapp.dto.Review" alias="review" />	
 	</typeAliases>
 </configuration>

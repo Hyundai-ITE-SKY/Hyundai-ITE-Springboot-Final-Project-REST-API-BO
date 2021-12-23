@@ -17,6 +17,7 @@ import com.mycompany.webapp.dto.Color;
 import com.mycompany.webapp.dto.Exhibition;
 import com.mycompany.webapp.dto.Pager;
 import com.mycompany.webapp.dto.Product;
+import com.mycompany.webapp.dto.Review;
 import com.mycompany.webapp.dto.Stock;
 import com.mycompany.webapp.dto.StockList;
 
@@ -215,5 +216,13 @@ public class ProductService {
 	
 	public Product getProduct(String pid) {
 		return productDao.getProduct(pid);
+	}
+	
+	public List<Review> getReviewList() {
+		return productDao.getReviewList() ;
+	}
+	
+	public Review getReview(int rno) {
+		return productDao.getReview(rno) ;
 	}
 }
