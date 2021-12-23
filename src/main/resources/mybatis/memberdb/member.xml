@@ -85,21 +85,22 @@
 
 	<select id="getEvent" parameterType="pager" resultType="event">
 		SELECT
-		eid, ename, edetail, estartdate, eenddate, eamount, elimit, eimage
+		eid, ename, edetail, estartdate, eenddate, eamount, elimit, eimage, eorder
 		FROM (SELECT ROWNUM as rnum, eid, ename, edetail, estartdate,
-		eenddate, eamount, elimit, eimage
-		FROM (SELECT eid, ename, edetail,
-		estartdate, eenddate, eamount, elimit,
-		eimage
-		FROM event)
+				eenddate, eamount, elimit, eimage, eorder
+				FROM (SELECT eid, ename, edetail,
+						estartdate, eenddate, eamount, elimit,
+						eimage, eorder
+						FROM event)
 		WHERE rownum
 		&lt;= #{endRowNo})
 		WHERE rnum &gt;= #{startRowNo}
+		ORDER BY eorder
 	</select>
 
 	<select id="getEventDetail" resultType="event">
 		select eid, ename,
-		edetail, estartdate, eenddate, eamount, elimit, eimage
+		edetail, estartdate, eenddate, eamount, elimit, eimage, eorder
 		from event
 		where
 		eid=#{eid}
@@ -113,10 +114,10 @@
 
 	<insert id="createEvent" parameterType="event">
 		INSERT INTO event (eid,
-		ename, edetail, estartdate, eenddate, eamount, elimit, eimage)
+		ename, edetail, estartdate, eenddate, eamount, elimit, eimage, eorder)
 		VALUES
 		(#{eid}, #{ename}, #{edetail}, #{estartdate}, #{eenddate}, #{eamount},
-		#{elimit}, #{eimage})
+		#{elimit}, #{eimage}, (select count(*) from event))
 	</insert>
 
 	<update id="updateEvent" parameterType="event">
@@ -129,13 +130,18 @@
 		#{eenddate},
 		eamount = #{eamount},
 		elimit = #{elimit},
-		eimage = #{eimage}
+		eimage = #{eimage},
 		WHERE eid = #{eid}
 	</update>
 
 	<delete id="deleteEvent" parameterType="int">
 		DELETE FROM event
-		WHERE
-		eid=#{eid}
+		WHERE		
 	</delete>
+	
+	<update id="updateEventOrder" parameterType="event">
+		update event
+		set eorder = #{eorder}
+		where eid = #{eid}
+	</update>
 </mapper>
