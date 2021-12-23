@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.json.JSONObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,7 +44,7 @@ public class DashboardController {
 		return map;
 	}
 	
-	//총 매출액
+	//총 매출액 
 	@GetMapping("/totalprice")
 	public Map<String, Object> totalPrice() {
 		log.info("실행");
@@ -97,7 +98,7 @@ public class DashboardController {
 		return map;
 	}
 	
-	//날짜별 주문수
+	//날짜별 주문수  
 	@GetMapping("/order/day")
 	public Map<String, Object> orderPerDay(){
 		log.info("실행");
@@ -149,6 +150,7 @@ public class DashboardController {
 			monthMap.get(month-i).put("LIFESTYLE", categoryMap.getOrDefault("LIFESTYLE", 0));
 		}
 		result = monthMap.toString();
-		return result;
+		JSONObject json = new JSONObject(monthMap);
+		return json.toString();
 	}
 }
